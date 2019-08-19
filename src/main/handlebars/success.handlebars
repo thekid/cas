@@ -1,0 +1,14 @@
+{{#> layout}}
+  {{#*inline "title"}}Success!{{/inline}}
+  {{#*inline "content"}}
+    <h1 class="ui header">Welcome, @{{user.username}}</h1>
+
+    <form class="ui form" method="POST" action="/logout">
+      <input type="hidden" name="token" value="{{token}}">
+
+      <button class="ui fluid large primary button" type="submit">Log out</button>
+    </form>
+  {{/inline}}
+  {{#*inline "script"}}
+  {{/inline}}
+{{/layout}}

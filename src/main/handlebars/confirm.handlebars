@@ -1,0 +1,14 @@
+{{#> layout}}
+  {{#*inline "title"}}Logout{{/inline}}
+  {{#*inline "content"}}
+    <h1 class="ui header">Please confirm you would like to log out</h1>
+
+    <form class="ui form" method="POST" action="/logout">
+      <input type="hidden" name="token" value="{{token}}">
+
+      <button class="ui fluid large primary button" type="submit">Log out</button>
+    </form>
+  {{/inline}}
+  {{#*inline "script"}}
+  {{/inline}}
+{{/layout}}
