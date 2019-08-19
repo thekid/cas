@@ -13,7 +13,7 @@ class NewToken {
     }
 
     $encryption= new Encryption($args[1]);
-    $random= $args[2] ? new SecretString($args[2]) : Secrets::random();
+    $random= isset($args[2]) ? new SecretString($args[2]) : Secrets::random();
  
     Console::writeLinef('QR Code  -> otpauth://totp/%s?secret=%s&label=CAS', $args[0], $random->encoded());
     Console::writeLinef('Database -> '.$encryption->encrypt($random->bytes()));
