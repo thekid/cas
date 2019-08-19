@@ -25,7 +25,7 @@ class EnterCredentials implements Step {
           'username'   => $user->username(),
           'tokens'     => $user->tokens(),
           'mfa'        => $user->mfa(),
-          'attributes' => null, // TBI
+          'attributes' => null, // TODO, see https://github.com/thekid/cas/issues/3
         ]);
         return;
       }
