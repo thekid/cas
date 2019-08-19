@@ -24,10 +24,10 @@ class QueryMFACode implements Step {
     $code= $req->param('code');
 
     // Check all of the user's token whether one of them matches.
-    foreach ($session->value('user')['tokens'] as $token) {
+    foreach ($session->value('user')['tokens'] as $name => $token) {
       $timebased= new TimeBased(new SecretBytes($this->encryption->decrypt($token)));
       if ($timebased->verify($code, $time, Tolerance::$PREVIOUS_AND_NEXT)) {
-        $session->register('mfa', true);
+        $session->register('mfa', $name);
         return;
       }
     }

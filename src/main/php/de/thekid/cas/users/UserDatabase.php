@@ -17,6 +17,7 @@ use util\Secret;
  * ========================
  * token_id  int PK
  * user_id   int
+ * name      varchar
  * secret    varchar
  */
 class UserDatabase implements Users {
@@ -41,7 +42,7 @@ class UserDatabase implements Users {
 
     $tokens= [];
     foreach ($this->conn->query('select * from token where user_id = %d', $user['user_id']) as $token) {
-      $tokens[]= $token['secret'];
+      $tokens[$token['name']]= $token['secret'];
     }
     return new Authenticated(new User($user['username'], $tokens));
   }
