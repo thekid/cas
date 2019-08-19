@@ -13,7 +13,7 @@ Minimalistic CAS Server in PHP
 
 Setup
 -----
-Create a database:
+Create a database (*the following uses MySQL syntax, adopt if necessary!*):
 
 ```sql
 create database IDENTITIES
@@ -28,7 +28,7 @@ create table user (
 create table token (
   token_id int(11) primary key auto_increment,
   user_id int(11),
-  name varchar(255)
+  name varchar(255),
   secret varchar(255)
 )
 
