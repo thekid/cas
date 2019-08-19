@@ -14,7 +14,8 @@
     "xp-forge/handlebars": "^4.0",
     "xp-forge/hashing": "^0.2",
     "xp-forge/credentials": "^1.0",
-    "xp-forge/google-authenticator": "^4.0"
+    "xp-forge/google-authenticator": "^4.0",
+    "php" : ">=7.2.0"
   },
 
   "require-dev": {
