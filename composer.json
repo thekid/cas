@@ -1,7 +1,7 @@
 {
   "name": "thekid/cas",
   "description": "CAS",
-  "license": "proprietary",
+  "license": "BSD",
 
   "require": {
     "xp-framework/core": "^9.7",
