@@ -8,6 +8,8 @@ CAS Server
 
 Minimalistic CAS Server in PHP
 
+![Login Screen](https://user-images.githubusercontent.com/696742/63304345-f298ac00-c2e2-11e9-8dcf-94b8566e1785.png)
+
 Setup
 -----
 Create a database:
@@ -25,6 +27,7 @@ create table user (
 create table token (
   token_id int(11) primary key auto_increment,
   user_id int(11),
+  name varchar(255)
   secret varchar(255)
 )
 
@@ -70,5 +73,5 @@ $ xp de.thekid.cas.cmd.NewToken [username] $CRYPTO_KEY
 ```
 
 ```sql
-insert into token (user_id, secret) values (1, "secret")
+insert into token (user_id, name, secret) values (1, "CAS", "secret")
 ```
