@@ -56,7 +56,7 @@ $ export CAS_DB_PASS=... # The one you used when creating the database user abov
 $ export CRYPTO_KEY=...  # Must have 32 characters
 ```
 
-*You can also put these variables into a file named **credentials**, if you wish:*
+You can also put these variables into a file named **credentials**, if you wish:
 
 
 ```sh
@@ -85,7 +85,7 @@ $ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.NewUser <user> [--password=<pa
 # Change a user's password
 $ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.ChangePassword <user> [--password=<password>]
 
-# Remove an existing new user
+# Remove an existing user
 $ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.RemoveUser <user>
 ```
 
@@ -99,7 +99,7 @@ $ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.NewToken <user> [--name=<name>
 # List existing tokens
 $ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.ListTokens <user>
 
-# Remove existing token
+# Remove an existing token
 $ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.RemoveToken <user> <name>
 ```
 
