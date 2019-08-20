@@ -37,14 +37,6 @@ class UserDatabase implements Users {
     return $tokens;    
   }
 
-  /** Returns a user by a given username */
-  public function named(string $username): ?User {
-    $user= $this->conn->query('select * from user where username = %s', $username)->next();
-    if (null === $user) return null;
-
-    return new User($user['username'], $this->tokens($user['user_id']));
-  }
-
   /** Authenticates a user, returning success or failure in a result object */
   public function authenticate(string $username, Secret $password): Authentication {
     $user= $this->conn->query('select * from user where username = %s', $username)->next();
@@ -58,6 +50,42 @@ class UserDatabase implements Users {
     }
 
     return new Authenticated(new User($user['username'], $this->tokens($user['user_id'])));
+  }
+
+  /** Returns a user by a given username */
+  public function named(string $username): ?User {
+    $user= $this->conn->query('select * from user where username = %s', $username)->next();
+    if (null === $user) return null;
+
+    return new User($user['username'], $this->tokens($user['user_id']));
+  }
+
+  /** Creates a new user with a given username and password. */
+  public function create(string $username, string|Secret $password): User {
+    $this->conn->insert(
+      'into user (username, hash) values (%s, %s)',
+      $username,
+      $this->hash->digest($password instanceof Secret ? $password->reveal() : $password),
+    );
+    $id= $this->conn->identity();
+    return new User($username, $this->tokens($id));
+  }
+
+  /** Removes an existing user */
+  public function remove(string|User $user): void {
+    $this->conn->delete(
+      'from user where username = %s',
+      $user instanceof User ? $user->username() : $user,
+    );
+  }
+
+  /** Changes a user's password. */
+  public function password(string|User $user, string|Secret $password): void {
+    $this->conn->update(
+      'user set hash = %s where username = %s',
+      $this->hash->digest($password instanceof Secret ? $password->reveal() : $password),
+      $user instanceof User ? $user->username() : $user,
+    );
   }
 
   public function newToken(string|User $user, string $name, string|Secret $secret) {
