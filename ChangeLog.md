@@ -1,0 +1,9 @@
+CAS Server change log
+=====================
+
+## ?.?.? / ????-??-??
+
+## 0.1.0 / ????-??-??
+
+* Merged PR #5: Tokens management - @thekid
+* Hello World! First release - @thekid
