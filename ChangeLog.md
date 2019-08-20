@@ -3,7 +3,7 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
-## 0.1.0 / ????-??-??
+## 0.1.0 / 2019-08-20
 
 * Implemented issue #1: Bundle JS / CSS dependencies (Fomantic UI, jQuery)
   (@thekid)
