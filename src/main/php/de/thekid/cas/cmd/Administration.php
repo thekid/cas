@@ -8,7 +8,8 @@ use util\cmd\{Command, Config};
 
 abstract class Administration extends Command {
 
-  public static function newInstance(Config $config) {
+  /** Instantiates command using injector */
+  public static function newInstance(Config $config): self {
     $credentials= new Credentials(new FromEnvironment(), new FromFile('credentials'));
     $inject= new Injector(
       new ConfiguredBindings($credentials->expanding($config->properties('inject'))),
