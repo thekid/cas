@@ -32,7 +32,10 @@ class App extends Application {
       '/serviceValidate' => $inject->get(Validate::class),
       '/login'           => $inject->get(Login::class),
       '/logout'          => $inject->get(Logout::class),
-      '/'                => fn($req, $res) => $req->dispatch('/login', $req->params()),
+      '/'                => fn($req, $res) => {
+        $res->answer(301);
+        $res->header('Location', $req->uri()->using()->path('/login')->params($req->params())->create());
+      }
     ];
   }
 }
