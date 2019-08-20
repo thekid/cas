@@ -6,6 +6,7 @@
   "require": {
     "xp-framework/core": "^9.7",
     "xp-framework/compiler": "^3.0",
+    "xp-framework/command": "^9.0",
     "xp-framework/rdbms": "^12.0",
     "xp-framework/xml": "^9.0",
     "xp-forge/web": "^1.8",
