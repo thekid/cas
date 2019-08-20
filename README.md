@@ -58,11 +58,15 @@ $ export CRYPTO_KEY=...  # Must have 32 characters
 $ xp -supervise web -c src/main/etc/local de.thekid.cas.App
 ```
 
-Creating a user
+User management
 ---------------
+
 ```sh
-# Create a new user
+# Create a new user; generating a random password if necessary
 $ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.NewUser <user> [--password=<password>]
+
+# Remove an existing new user
+$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.RemoveUser <user>
 ```
 
 Setting up MFA
