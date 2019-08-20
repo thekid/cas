@@ -16,4 +16,7 @@ interface Users {
   /** Removes an existing user */
   public function remove(string|User $user): void;
 
+  /** Changes a user's password. */
+  public function password(string|User $user, string|Secret $password): void;
+
 }

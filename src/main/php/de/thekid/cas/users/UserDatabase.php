@@ -79,6 +79,15 @@ class UserDatabase implements Users {
     );
   }
 
+  /** Changes a user's password. */
+  public function password(string|User $user, string|Secret $password): void {
+    $this->conn->update(
+      'user set hash = %s where username = %s',
+      $this->hash->digest($password instanceof Secret ? $password->reveal() : $password),
+      $user instanceof User ? $user->username() : $user,
+    );
+  }
+
   public function newToken(string|User $user, string $name, string|Secret $secret) {
     $q= $this->conn->query(
       'select user_id from user where username = %s',
