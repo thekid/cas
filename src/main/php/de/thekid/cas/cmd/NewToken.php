@@ -4,7 +4,6 @@ use com\google\authenticator\Secrets;
 use de\thekid\cas\Encryption;
 use de\thekid\cas\users\Users;
 use lang\IllegalArgumentException;
-use util\cmd\Console;
 
 class NewToken extends Administration {
   private $user, $name;
