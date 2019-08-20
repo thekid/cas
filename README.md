@@ -49,15 +49,31 @@ $ composer install
 # ...
 ```
 
+Export environment:
+
+```sh
+$ export CAS_DB_PASS=... # The one you used when creating the database user above
+$ export CRYPTO_KEY=...  # Must have 32 characters
+```
+
+*You can also put these variables into a file named **credentials**, if you wish:*
+
+
+```sh
+$ cat > credentials
+CAS_DB_PASS=...
+CRYPTO_KEY=...
+```
+
 Running
 -------
 Start the server:
 
 ```sh
-$ export CAS_DB_PASS=... # The one you used when creating the database user above
-$ export CRYPTO_KEY=...  # Must have 32 characters
 $ xp -supervise web -c src/main/etc/local de.thekid.cas.App
 ```
+
+*Now open http://localhost:8080/login in your browser.*
 
 User management
 ---------------
