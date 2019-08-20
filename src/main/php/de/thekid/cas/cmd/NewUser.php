@@ -27,7 +27,7 @@ class NewUser extends Administration {
   }
  
   public function run(): int {
-    $this->users->newUser($this->user, $this->password);
+    $this->users->create($this->user, $this->password);
     $this->out->writeLine('User created');
     return 0;
   }

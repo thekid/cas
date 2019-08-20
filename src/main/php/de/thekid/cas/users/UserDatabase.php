@@ -60,11 +60,18 @@ class UserDatabase implements Users {
     return new Authenticated(new User($user['username'], $this->tokens($user['user_id'])));
   }
 
-  public function newUser($user, string|Secret $password) {
+  public function create(string $user, string|Secret $password) {
     $this->conn->insert(
       'into user (username, hash) values (%s, %s)',
       $user,
       $this->hash->digest($password instanceof Secret ? $password->reveal() : $password),
+    );
+  }
+
+  public function remove(string|User $user) {
+    $this->conn->delete(
+      'from user where username = %s',
+      $user instanceof User ? $user->username() : $user,
     );
   }
 
