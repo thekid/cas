@@ -21,7 +21,7 @@ use IDENTITIES
 
 create table user (
   user_id int(11) primary key auto_increment,
-  username varchar(255),
+  username varchar(100) unique,
   hash varchar(255)
 )
 
