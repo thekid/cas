@@ -13,7 +13,10 @@ class UseService implements Step {
       }
 
       $session->register('service', $service);
+      return null;
     }
+
+    $session->remove('service');
     return null;
   }
 
