@@ -37,14 +37,6 @@ class UserDatabase implements Users {
     return $tokens;    
   }
 
-  /** Returns a user by a given username */
-  public function named(string $username): ?User {
-    $user= $this->conn->query('select * from user where username = %s', $username)->next();
-    if (null === $user) return null;
-
-    return new User($user['username'], $this->tokens($user['user_id']));
-  }
-
   /** Authenticates a user, returning success or failure in a result object */
   public function authenticate(string $username, Secret $password): Authentication {
     $user= $this->conn->query('select * from user where username = %s', $username)->next();
@@ -58,6 +50,14 @@ class UserDatabase implements Users {
     }
 
     return new Authenticated(new User($user['username'], $this->tokens($user['user_id'])));
+  }
+
+  /** Returns a user by a given username */
+  public function named(string $username): ?User {
+    $user= $this->conn->query('select * from user where username = %s', $username)->next();
+    if (null === $user) return null;
+
+    return new User($user['username'], $this->tokens($user['user_id']));
   }
 
   /** Creates a new user with a given username and password. */
