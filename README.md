@@ -60,10 +60,9 @@ $ xp -supervise web -c src/main/etc/local de.thekid.cas.App
 
 Creating a user
 ---------------
-
-```sql
-insert into user (username, hash) values ("username", "sha256-hash")
-select @@identity
+```sh
+# Create a new user
+$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.NewUser <user> [--password=<password>]
 ```
 
 Setting up MFA
