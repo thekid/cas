@@ -70,9 +70,13 @@ Setting up MFA
 --------------
 
 ```sh
-$ xp de.thekid.cas.cmd.NewToken [username] $CRYPTO_KEY
+# Create a new token
+$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.NewToken <user> [--name=<name>]
+
+# List existing tokens
+$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.ListTokens <user>
+
+# Remove existing token
+$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.RemoveToken <user> <name>
 ```
 
-```sql
-insert into token (user_id, name, secret) values (1, "CAS", "secret")
-```
