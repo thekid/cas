@@ -1,22 +1,42 @@
 <?php namespace de\thekid\cas\cmd;
 
-use com\google\authenticator\{Secrets, SecretString};
+use com\google\authenticator\Secrets;
 use de\thekid\cas\Encryption;
+use de\thekid\cas\users\Users;
+use lang\IllegalArgumentException;
 use util\cmd\Console;
 
-class NewToken {
+class NewToken extends Administration {
+  private $user, $name;
 
-  public static function main(array<string> $args): int {
-    if (sizeof($args) < 2) {
-      Console::writeLine('Usage: xp '.strtr(self::class, '\\', '.').' <username> <key> [<secret>]');
-      return 1;
+  public function __construct(private Users $users, private Encryption $encryption) { }
+
+  <<arg(['position' => 0])>>
+  public function setUser(string $user) {
+    if (null === ($this->user= $this->users->named($user))) {
+      throw new IllegalArgumentException('No such user '.$user);
     }
+  }
 
-    $encryption= new Encryption($args[1]);
-    $random= isset($args[2]) ? new SecretString($args[2]) : Secrets::random();
+  <<arg>>
+  public function setName(?string $name= 'CAS') {
+    $tokens= $this->user->tokens();
+    if (isset($tokens[$name])) {
+      throw new IllegalArgumentException('Name "'.$name.'" already used');
+    }
+    $this->name= $name;
+  }
  
-    Console::writeLinef('QR Code  -> otpauth://totp/%s?secret=%s&label=CAS', $args[0], $random->encoded());
-    Console::writeLinef('Database -> '.$encryption->encrypt($random->bytes()));
+  public function run(): int {
+    $random= Secrets::random();
+    $this->out->writeLinef(
+      '* otpauth://totp/%s?secret=%s&label=%s',
+      $this->user->username(),
+      $random->encoded(),
+      $this->name,
+    );
+
+    $this->users->newToken($this->user, $this->name, $this->encryption->encrypt($random->bytes()));
     return 0;
   }
 }
