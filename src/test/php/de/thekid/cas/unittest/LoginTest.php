@@ -143,6 +143,32 @@ class LoginTest extends HandlerTest {
   }
 
   <<test>>
+  public function displays_success() {
+    $session= $this->session(['token' => $token= uniqid()]);
+
+    $this->handle($session, 'GET', '/login');
+    $this->handle($session, 'POST', '/login', sprintf(
+      'flow=%s&token=%s&username=root&password=secret',
+      $this->templates->rendered()['login']['flow'],
+      $token,
+    ));
+
+    $this->assertEquals(
+      [
+        'token'   => $token,
+        'flow'    => $this->signed->id(3),
+        'user'    => [
+          'username'   => 'root',
+          'tokens'     => [],
+          'mfa'        => false,
+          'attributes' => null,
+        ],
+      ],
+      $this->templates->rendered()['success']
+    );
+  }
+
+  <<test>>
   public function issues_ticket_and_redirect_to_service() {
     $session= $this->session(['token' => $token= uniqid()]);
 
@@ -161,7 +187,7 @@ class LoginTest extends HandlerTest {
           'tokens'     => [],
           'mfa'        => false,
           'attributes' => null,
-        ]
+        ],
       ],
       $this->tickets->validate(0),
     );
