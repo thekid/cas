@@ -5,6 +5,11 @@ use util\Random;
 use web\session\Sessions;
 use web\{Handler, Error};
 
+/**
+ * Login page flow 
+ *
+ * @test  xp://de.thekid.cas.unittest.LoginTest
+ */
 class Login implements Handler {
   private const RAND = 8;
 
