@@ -13,7 +13,6 @@ class Login implements Handler {
     private Templating $templates,
     private Flow $flow,
     private Sessions $sessions,
-    private Random $random,
     private Signed $signed,
   ) { }
 
@@ -24,7 +23,7 @@ class Login implements Handler {
     if (null === ($session= $this->sessions->locate($req))) {
       $session= $this->sessions->create();
 
-      $token= bin2hex($this->random->bytes(self::RAND));
+      $token= bin2hex(new Random()->bytes(self::RAND));
       $session->register('token', $token);
     } else {
       $token= $session->value('token');

@@ -27,7 +27,13 @@ class LoginTest extends HandlerTest {
 
 
   /** @return web.Handler */
-  protected fn handler() => new Login($this->templates, $this->flow, $this->sessions, new Random(), $this->signed);
+  protected fn handler() => new Login($this->templates, $this->flow, $this->sessions, $this->signed);
+
+  <<test>>
+  public function creates_session_if_ncessary() {
+    $this->handle(null, 'GET', '/login');
+    $this->assertNotEquals(null, current($this->sessions->all())->value('token'));
+  }
 
   <<test>>
   public function stores_given_service() {
