@@ -13,6 +13,6 @@ class Frontend extends Bindings {
   /** @param inject.Injector */
   public function configure($inject) {
     $inject->bind(Sessions::class, new InFileSystem(Environment::tempDir())->named('auth')->insecure($this->dev));
-    $inject->bind(TemplateEngine::class, new TemplateEngine(new Path($this->webroot, 'src/main/handlebars')));
+    $inject->bind(Templating::class, new TemplateEngine(new Path($this->webroot, 'src/main/handlebars')));
   }
 }

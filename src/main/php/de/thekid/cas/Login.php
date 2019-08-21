@@ -10,7 +10,7 @@ class Login implements Handler {
 
   /** Creates a new login page flow */
   public function __construct(
-    private TemplateEngine $templates,
+    private Templating $templates,
     private Flow $flow,
     private Sessions $sessions,
     private Random $random,

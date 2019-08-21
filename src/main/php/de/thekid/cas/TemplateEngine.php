@@ -9,7 +9,7 @@ use io\Path;
  *
  * @test  xp://de.thekid.cas.unittest.TemplateEngineTest
  */
-class TemplateEngine {
+class TemplateEngine implements Templating {
   private $backing;
 
   /** Creates a new template engine */
