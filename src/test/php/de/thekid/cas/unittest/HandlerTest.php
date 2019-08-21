@@ -40,14 +40,13 @@ abstract class HandlerTest extends TestCase {
    * @param  web.session.ISession $session
    * @param  string $method
    * @param  string $uri
-   * @param  string $body
+   * @param  [:string] $payload
    * @return web.Response
    */
-  protected function handle($session, $method= 'GET', $uri= '/', $body= '') {
+  protected function handle($session, $method= 'GET', $uri= '/', $payload= null) {
     $headers= $session ? ['Cookie' => $this->sessions->name().'='.$session->id()] : [];
-    $body && $headers+= ['Content-Type' => 'application/x-www-form-urlencoded', 'Content-Length' => strlen($body)];
 
-    $req= new Request(new TestInput($method, $uri, $headers, $body));
+    $req= new Request(new TestInput($method, $uri, $headers, $payload));
     $res= new Response(new TestOutput());
 
     $this->handler()->handle($req, $res);

@@ -77,11 +77,12 @@ class LoginTest extends HandlerTest {
     $session= $this->session(['token' => $token= uniqid()]);
 
     $this->handle($session, 'GET', '/login');
-    $this->handle($session, 'POST', '/login', sprintf(
-      'flow=%s&token=%s&username=unknown&password=...',
-      $this->templates->rendered()['login']['flow'],
-      $token,
-    ));
+    $this->handle($session, 'POST', '/login', [
+      'flow'     => $this->templates->rendered()['login']['flow'],
+      'token'    => $token,
+      'username' => 'unknown',
+      'password' => '...',
+    ]);
 
     $this->assertEquals(
       [
@@ -101,11 +102,12 @@ class LoginTest extends HandlerTest {
     $session= $this->session(['token' => $token= uniqid()]);
 
     $this->handle($session, 'GET', '/login');
-    $this->handle($session, 'POST', '/login', sprintf(
-      'flow=%s&token=%s&username=root&password=incorrect',
-      $this->templates->rendered()['login']['flow'],
-      $token,
-    ));
+    $this->handle($session, 'POST', '/login', [
+      'flow'     => $this->templates->rendered()['login']['flow'],
+      'token'    => $token,
+      'username' => 'root',
+      'password' => 'incorrect',
+    ]);
 
     $this->assertEquals(
       [
@@ -125,11 +127,12 @@ class LoginTest extends HandlerTest {
     $session= $this->session(['token' => $token= uniqid()]);
 
     $this->handle($session, 'GET', '/login');
-    $this->handle($session, 'POST', '/login', sprintf(
-      'flow=%s&token=%s&username=root&password=secret',
-      $this->templates->rendered()['login']['flow'],
-      $token,
-    ));
+    $this->handle($session, 'POST', '/login', [
+      'flow'     => $this->templates->rendered()['login']['flow'],
+      'token'    => $token,
+      'username' => 'root',
+      'password' => 'secret',
+    ]);
 
     $this->assertEquals(
       [
@@ -147,11 +150,12 @@ class LoginTest extends HandlerTest {
     $session= $this->session(['token' => $token= uniqid()]);
 
     $this->handle($session, 'GET', '/login');
-    $this->handle($session, 'POST', '/login', sprintf(
-      'flow=%s&token=%s&username=root&password=secret',
-      $this->templates->rendered()['login']['flow'],
-      $token,
-    ));
+    $this->handle($session, 'POST', '/login', [
+      'flow'     => $this->templates->rendered()['login']['flow'],
+      'token'    => $token,
+      'username' => 'root',
+      'password' => 'secret',
+    ]);
 
     $this->assertEquals(
       [
@@ -173,11 +177,12 @@ class LoginTest extends HandlerTest {
     $session= $this->session(['token' => $token= uniqid()]);
 
     $this->handle($session, 'GET', '/login?service='.self::SERVICE);
-    $res= $this->handle($session, 'POST', '/login', sprintf(
-      'flow=%s&token=%s&username=root&password=secret',
-      $this->templates->rendered()['login']['flow'],
-      $token,
-    ));
+    $res= $this->handle($session, 'POST', '/login', [
+      'flow'     => $this->templates->rendered()['login']['flow'],
+      'token'    => $token,
+      'username' => 'root',
+      'password' => 'secret',
+    ]);
 
     $this->assertEquals(
       [

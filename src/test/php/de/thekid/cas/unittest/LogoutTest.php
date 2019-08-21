@@ -32,7 +32,7 @@ class LogoutTest extends HandlerTest {
   <<test>>
   public function displays_confirmation_screen_when_accessed_with_mismatched_token_parameter() {
     $session= $this->session(['token' => $token= uniqid()]);
-    $this->handle($session, 'GET', '/logout', 'token=incorrect');
+    $this->handle($session, 'GET', '/logout', ['token' => 'incorrect']);
 
     $this->assertEquals(['confirm' => ['token' => $token]], $this->templates->rendered());
     $this->assertTrue($session->valid());
@@ -41,7 +41,7 @@ class LogoutTest extends HandlerTest {
   <<test>>
   public function logout_performed_when_tokens_match() {
     $session= $this->session(['token' => $token= uniqid()]);
-    $this->handle($session, 'POST', '/logout', 'token='.rawurlencode($token));
+    $this->handle($session, 'POST', '/logout', ['token' => $token]);
 
     $this->assertEquals(['logout' => []], $this->templates->rendered());
     $this->assertFalse($session->valid());
