@@ -38,8 +38,7 @@ class ValidateTest extends TestCase {
     $res= new Response(TestOutput::buffered());
     $fixture->handle($req, $res);
 
-    [$headers, $body]= explode("\r\n\r\n", $res->output()->bytes(), 2);
-    return $body;
+    return $res->output()->body();
   }
 
   <<test>>
