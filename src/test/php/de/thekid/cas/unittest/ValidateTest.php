@@ -2,7 +2,7 @@
 
 use de\thekid\cas\{Validate, Signed};
 use unittest\TestCase;
-use web\io\{TestInput, TestOutput, Buffered};
+use web\io\{TestInput, TestOutput};
 use web\{Request, Response};
 
 class ValidateTest extends TestCase {
@@ -35,7 +35,7 @@ class ValidateTest extends TestCase {
     $fixture= new Validate($this->tickets, $this->signed);
 
     $req= new Request(new TestInput('GET', $uri));
-    $res= new Response(new TestOutput()->using(Buffered::class));
+    $res= new Response(TestOutput::buffered());
     $fixture->handle($req, $res);
 
     [$headers, $body]= explode("\r\n\r\n", $res->output()->bytes(), 2);
