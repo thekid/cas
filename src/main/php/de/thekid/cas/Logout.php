@@ -3,10 +3,16 @@
 use web\Handler;
 use web\session\Sessions;
 
+/**
+ * Logout. If not accessed with a CSRF token, will display a logout
+ * confirmatio page.
+ *
+ * @test  xp://de.thekid.cas.unittest.LogoutTest
+ */
 class Logout implements Handler {
 
   /** Creates a new logout handler */
-  public function __construct(private TemplateEngine $templates, private Sessions $sessions) { }
+  public function __construct(private Templating $templates, private Sessions $sessions) { }
 
   /** @return var */
   public function handle($req, $res) {
