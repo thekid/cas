@@ -2,7 +2,7 @@
 
 use de\thekid\cas\flow\{Flow, UseService, EnterCredentials, DisplaySuccess};
 use de\thekid\cas\services\Services;
-use de\thekid\cas\users\NoSuchUser;
+use de\thekid\cas\users\{NoSuchUser, PasswordMismatch};
 use de\thekid\cas\{Login, Signed};
 use util\Random;
 
@@ -20,7 +20,7 @@ class LoginTest extends HandlerTest {
       new UseService(new class() implements Services {
         public fn validate($url) => LoginTest::SERVICE === $url;
       }),
-      new EnterCredentials(new TestingUsers(['root' => 'password'])),
+      new EnterCredentials(new TestingUsers(['root' => 'secret'])),
       new DisplaySuccess(),
     ]);
   }
@@ -84,6 +84,52 @@ class LoginTest extends HandlerTest {
         ]
       ],
       $this->templates->rendered()
+    );
+  }
+
+  <<test>>
+  public function cannot_authenticate_user_with_incorrect_password() {
+    $session= $this->session(['token' => $token= uniqid()]);
+
+    $this->handle($session, 'GET', '/login');
+    $this->handle($session, 'POST', '/login', sprintf(
+      'flow=%s&token=%s&username=root&password=incorrect',
+      $this->templates->rendered()['login']['flow'],
+      $token,
+    ));
+
+    $this->assertEquals(
+      [
+        'login' => [
+          'service' => null,
+          'token'   => $token,
+          'flow'    => $this->signed->id(1),
+          'error'   => ['failed' => new PasswordMismatch('root')],
+        ]
+      ],
+      $this->templates->rendered()
+    );
+  }
+
+  <<test>>
+  public function authenticate_registers_user() {
+    $session= $this->session(['token' => $token= uniqid()]);
+
+    $this->handle($session, 'GET', '/login');
+    $this->handle($session, 'POST', '/login', sprintf(
+      'flow=%s&token=%s&username=root&password=secret',
+      $this->templates->rendered()['login']['flow'],
+      $token,
+    ));
+
+    $this->assertEquals(
+      [
+        'username'   => 'root',
+        'tokens'     => [],
+        'mfa'        => false,
+        'attributes' => null,
+      ],
+      $session->value('user')
     );
   }
 }
