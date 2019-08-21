@@ -3,6 +3,8 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.2.0 / 2019-08-21
+
 * Use more compact XML layout for service responses - @thekid
 * Added various unittests for login and logout functionality - @thekid
 
