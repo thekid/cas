@@ -1,6 +1,5 @@
 <?php namespace de\thekid\cas\unittest;
 
-use de\thekid\cas\tickets\Tickets;
 use de\thekid\cas\{Validate, Signed};
 use unittest\TestCase;
 use web\io\{TestInput, TestOutput, Buffered};
@@ -11,20 +10,7 @@ class ValidateTest extends TestCase {
 
   /** @return void */
   public function setUp() {
-    $this->tickets= new class() implements Tickets {
-      private $tickets= [];
-
-      public fn prefix() => 'ST-';
-
-      public function create($value) {
-        $this->tickets[]= $value;
-        return sizeof($this->tickets) - 1;
-      }
-
-      public function validate($id) {
-        return $this->tickets[$id] ?? null;
-      }
-    };
+    $this->tickets= new TestingTickets();
     $this->signed= new Signed('testing-secret');
   }
 

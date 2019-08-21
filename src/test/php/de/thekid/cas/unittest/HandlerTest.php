@@ -41,7 +41,7 @@ abstract class HandlerTest extends TestCase {
    * @param  string $method
    * @param  string $uri
    * @param  string $body
-   * @return void
+   * @return web.Response
    */
   protected function handle($session, $method= 'GET', $uri= '/', $body= '') {
     $headers= $session ? ['Cookie' => $this->sessions->name().'='.$session->id()] : [];
@@ -51,5 +51,6 @@ abstract class HandlerTest extends TestCase {
     $res= new Response(new TestOutput());
 
     $this->handler()->handle($req, $res);
+    return $res;
   }
 }

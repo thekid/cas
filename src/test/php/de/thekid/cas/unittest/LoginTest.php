@@ -1,7 +1,8 @@
 <?php namespace de\thekid\cas\unittest;
 
-use de\thekid\cas\flow\{Flow, UseService, EnterCredentials, DisplaySuccess};
+use de\thekid\cas\flow\{Flow, UseService, EnterCredentials, RedirectToService, DisplaySuccess};
 use de\thekid\cas\services\Services;
+use de\thekid\cas\tickets\Tickets;
 use de\thekid\cas\users\{NoSuchUser, PasswordMismatch};
 use de\thekid\cas\{Login, Signed};
 use util\Random;
@@ -15,12 +16,14 @@ class LoginTest extends HandlerTest {
   public function setUp() {
     parent::setUp();
     $this->templates= new TestingTemplates();
+    $this->tickets= new TestingTickets();
     $this->signed= new Signed('secret');
     $this->flow= new Flow([
       new UseService(new class() implements Services {
         public fn validate($url) => LoginTest::SERVICE === $url;
       }),
       new EnterCredentials(new TestingUsers(['root' => 'secret'])),
+      new RedirectToService($this->tickets, $this->signed),
       new DisplaySuccess(),
     ]);
   }
@@ -136,6 +139,35 @@ class LoginTest extends HandlerTest {
         'attributes' => null,
       ],
       $session->value('user')
+    );
+  }
+
+  <<test>>
+  public function issues_ticket_and_redirect_to_service() {
+    $session= $this->session(['token' => $token= uniqid()]);
+
+    $this->handle($session, 'GET', '/login?service='.self::SERVICE);
+    $res= $this->handle($session, 'POST', '/login', sprintf(
+      'flow=%s&token=%s&username=root&password=secret',
+      $this->templates->rendered()['login']['flow'],
+      $token,
+    ));
+
+    $this->assertEquals(
+      [
+        'service' => self::SERVICE,
+        'user'    => [
+          'username'   => 'root',
+          'tokens'     => [],
+          'mfa'        => false,
+          'attributes' => null,
+        ]
+      ],
+      $this->tickets->validate(0),
+    );
+    $this->assertEquals(
+      self::SERVICE.'?ticket='.$this->signed->id(0, $this->tickets->prefix()),
+      $res->headers()['Location']
     );
   }
 }
