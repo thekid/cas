@@ -5,7 +5,7 @@ use web\session\Sessions;
 
 /**
  * Logout. If not accessed with a CSRF token, will display a logout
- * confirmatio page.
+ * confirmation page.
  *
  * @test  xp://de.thekid.cas.unittest.LogoutTest
  */
