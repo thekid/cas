@@ -2,7 +2,7 @@
 
 use de\thekid\cas\{Logout, Templating};
 use unittest\TestCase;
-use web\io\{TestInput, TestOutput, Buffered};
+use web\io\{TestInput, TestOutput};
 use web\session\ForTesting;
 use web\{Request, Response};
 
@@ -20,9 +20,20 @@ class LogoutTest extends TestCase {
     $this->sessions= new ForTesting();
   }
 
+  /**
+   * Invokes handle()
+   *
+   * @param  string $method
+   * @param  [:string] $headers
+   * @param  string $body
+   * @return void
+   */
   private function handle($method= 'GET', $headers= [], $body= '') {
+    $body && $headers+= ['Content-Type' => 'application/x-www-form-urlencoded', 'Content-Length' => strlen($body)];
+
     $req= new Request(new TestInput($method, '/logout', $headers, $body));
-    $res= new Response(new TestOutput()->using(Buffered::class));
+    $res= new Response(new TestOutput());
+
     new Logout($this->templates, $this->sessions)->handle($req, $res);
   }
 
@@ -39,7 +50,17 @@ class LogoutTest extends TestCase {
     $session->register('token', $token);
 
     $this->handle('GET', ['Cookie' => $this->sessions->name().'='.$session->id()]);
+    $this->assertEquals(['confirm' => ['token' => $token]], $this->templates->rendered);
+    $this->assertTrue($session->valid());
+  }
 
+  <<test>>
+  public function displays_confirmation_screen_when_accessed_with_mismatched_token_parameter() {
+    $token= uniqid();
+    $session= $this->sessions->create();
+    $session->register('token', $token);
+
+    $this->handle('GET', ['Cookie' => $this->sessions->name().'='.$session->id()], 'token=incorrect');
     $this->assertEquals(['confirm' => ['token' => $token]], $this->templates->rendered);
     $this->assertTrue($session->valid());
   }
@@ -50,14 +71,7 @@ class LogoutTest extends TestCase {
     $session= $this->sessions->create();
     $session->register('token', $token);
 
-    $cookie= $this->sessions->name().'='.$session->id();
-    $body= 'token='.rawurlencode($token);
-    $this->handle(
-      'POST',
-      ['Cookie' => $cookie, 'Content-Type' => 'application/x-www-form-urlencoded', 'Content-Length' => strlen($body)],
-      $body
-    );
-
+    $this->handle('POST', ['Cookie' => $this->sessions->name().'='.$session->id()], 'token='.rawurlencode($token));
     $this->assertEquals(['logout' => []], $this->templates->rendered);
     $this->assertFalse($session->valid());
   }
