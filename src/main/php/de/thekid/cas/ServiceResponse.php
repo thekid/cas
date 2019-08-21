@@ -33,7 +33,7 @@ abstract class ServiceResponse extends Enum {
           )
         ;
 
-        $response->send($tree->getSource(), 'text/xml');
+        $response->send($tree->getSource(INDENT_DEFAULT), 'text/xml');
       }
     };
     self::$JSON= new class(1, 'JSON') extends ServiceResponse {
