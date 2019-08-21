@@ -3,6 +3,9 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* Use more compact XML layout for service responses - @thekid
+* Added various unittests for login and logout functionality - @thekid
+
 ## 0.1.0 / 2019-08-20
 
 * Implemented issue #1: Bundle JS / CSS dependencies (Fomantic UI, jQuery)
