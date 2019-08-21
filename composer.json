@@ -13,7 +13,7 @@
     "xp-forge/sessions": "^0.6",
     "xp-forge/inject": "^4.0",
     "xp-forge/handlebars": "^4.0",
-    "xp-forge/hashing": "^0.2",
+    "xp-forge/hashing": "^1.0",
     "xp-forge/credentials": "^1.0",
     "xp-forge/google-authenticator": "^4.0",
     "php" : ">=7.2.0"
