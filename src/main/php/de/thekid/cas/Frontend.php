@@ -3,7 +3,7 @@
 use inject\Bindings;
 use io\Path;
 use lang\Environment;
-use web\session\{Sessions, InFileSystem};
+use web\session\{Sessions, Cookies, InFileSystem};
 
 /** Sessioning and templates */
 class Frontend extends Bindings {
@@ -12,7 +12,8 @@ class Frontend extends Bindings {
 
   /** @param inject.Injector */
   public function configure($inject) {
-    $inject->bind(Sessions::class, new InFileSystem(Environment::tempDir())->named('auth')->insecure($this->dev));
+    $cookies= new Cookies()->insecure($this->dev);
+    $inject->bind(Sessions::class, new InFileSystem(Environment::tempDir())->named('auth')->via($cookies));
     $inject->bind(Templating::class, new TemplateEngine(new Path($this->webroot, 'src/main/handlebars')));
   }
 }
