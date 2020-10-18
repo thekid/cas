@@ -52,6 +52,15 @@ class UserDatabase implements Users {
     return new Authenticated(new User($user['username'], $this->tokens($user['user_id'])));
   }
 
+  /** Returns all users */
+  public function all(?string $filter= null): iterable {
+    if (null === $filter) {
+      yield from $this->conn->open('select * from user');
+    } else {
+      yield from $this->conn->open('select * from user where username like %s', strtr($filter, '*', '%'));
+    }
+  }
+
   /** Returns a user by a given username */
   public function named(string $username): ?User {
     $user= $this->conn->query('select * from user where username = %s', $username)->next();

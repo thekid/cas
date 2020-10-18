@@ -7,6 +7,9 @@ interface Users {
   /** Authenticates a user, returning success or failure in a result object */
   public function authenticate(string $username, Secret $password): Authentication;
 
+  /** Returns all users */
+  public function all(?string $filter= null): iterable;
+
   /** Returns a user by a given username */
   public function named(string $username): ?User;
 

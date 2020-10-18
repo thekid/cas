@@ -87,6 +87,12 @@ $ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.ChangePassword <user> [--passw
 
 # Remove an existing user
 $ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.RemoveUser <user>
+
+# List all users
+$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.ListUsers
+
+# Filter users on their username. Use * to match any character
+$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.ListUsers 't*'
 ```
 
 Setting up MFA
