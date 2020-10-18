@@ -1,64 +1,55 @@
 <?php namespace de\thekid\cas;
 
-use lang\Enum;
 use xml\{Tree, Node};
 
 /** CAS service response - in XML and JSON */
-abstract class ServiceResponse extends Enum {
-  public static $XML, $JSON;
-
-  static function __static() {
-    self::$XML= new class(0, 'XML') extends ServiceResponse {
-      static function __static() { }
-
-      public function success($user) {
-        $n= new Node('cas:authenticationSuccess')->withChild(new Node('cas:user', $user['username']));
-        if (isset($user['attributes'])) {
-          $a= $n->addChild('cas:attributes');
-          foreach ($user['attributes'] as $key => $value) {
-            $a->addChild(new Node('cas:'.$key, $value));
-          }
+abstract enum ServiceResponse {
+  XML {
+    public function success($user) {
+      $n= new Node('cas:authenticationSuccess')->withChild(new Node('cas:user', $user['username']));
+      if (isset($user['attributes'])) {
+        $a= $n->addChild('cas:attributes');
+        foreach ($user['attributes'] as $key => $value) {
+          $a->addChild(new Node('cas:'.$key, $value));
         }
-        return $n;
       }
+      return $n;
+    }
 
-      public function failure($code, $message, ... $args) {
-        return new Node('cas:authenticationFailure', vsprintf($message, $args), ['code' => $code]);
-      }
+    public function failure($code, $message, ... $args) {
+      return new Node('cas:authenticationFailure', vsprintf($message, $args), ['code' => $code]);
+    }
 
-      public function transmit($response, $result) {
-        $tree= new Tree()
-          ->withRoot(new Node('cas:serviceResponse', null, ['xmlns:cas' => 'http://www.yale.edu/tp/cas'])
-            ->withChild($result)
-          )
-        ;
+    public function transmit($response, $result) {
+      $tree= new Tree()
+        ->withRoot(new Node('cas:serviceResponse', null, ['xmlns:cas' => 'http://www.yale.edu/tp/cas'])
+          ->withChild($result)
+        )
+      ;
 
-        $response->send($tree->getSource(INDENT_DEFAULT), 'text/xml');
-      }
-    };
-    self::$JSON= new class(1, 'JSON') extends ServiceResponse {
-      static function __static() { }
-
-      public function success($user) {
-        $success= ['user' => $user['username']];
-        if (isset($user['attributes'])) {
-          $success['attributes']= [];
-          foreach ($user['attributes'] as $key => $value) {
-            $success['attributes'][$key]= $value;
-          }
+      $response->send($tree->getSource(INDENT_DEFAULT), 'text/xml');
+    }
+  },
+  JSON {
+    public function success($user) {
+      $success= ['user' => $user['username']];
+      if (isset($user['attributes'])) {
+        $success['attributes']= [];
+        foreach ($user['attributes'] as $key => $value) {
+          $success['attributes'][$key]= $value;
         }
-        return ['authenticationSuccess' => $success];
       }
+      return ['authenticationSuccess' => $success];
+    }
 
-      public function failure($code, $message, ... $args) {
-        return ['authenticationFailure' => ['code' => $code, 'description' => vsprintf($message, $args)]];
-      }
+    public function failure($code, $message, ... $args) {
+      return ['authenticationFailure' => ['code' => $code, 'description' => vsprintf($message, $args)]];
+    }
 
-      public function transmit($response, $result) {
-        $response->send(json_encode(['serviceResponse' => $result]), 'application/json');
-      }
-    };
-  }
+    public function transmit($response, $result) {
+      $response->send(json_encode(['serviceResponse' => $result]), 'application/json');
+    }
+  };
 
   /** Creates a new ServiceResponse instance for a given format name. Defaults to XML */
   public static function forFormat(?string $name): self {
