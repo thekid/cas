@@ -18,7 +18,7 @@
     "xp-forge/google-authenticator": "^5.0",
     "xp-lang/php-compact-methods": "^1.0",
     "php" : ">=7.2.0",
-    "ext-sodium" : ">=7.2.0"
+    "ext-sodium" : "*"
   },
 
   "require-dev": {
