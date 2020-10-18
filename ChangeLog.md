@@ -3,6 +3,8 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #9: Use enum syntax for ServiceResponse - @thekid
+
 ## 0.4.0 / 2020-10-18
 
 * Upgraded bundled Fomantic UI to version 2.8.7 - @thekid
