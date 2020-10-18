@@ -3,11 +3,11 @@
 use com\github\mustache\{InMemory, TemplateNotFoundException};
 use de\thekid\cas\TemplateEngine;
 use io\Path;
-use unittest\TestCase;
+use unittest\{Assert, Test};
 use web\Response;
-use web\io\{TestOutput, Buffered};
+use web\io\{Buffered, TestOutput};
 
-class TemplateEngineTest extends TestCase {
+class TemplateEngineTest {
 
   #[Test]
   public function can_create_with_path() {
@@ -27,7 +27,7 @@ class TemplateEngineTest extends TestCase {
     $fixture->render($res, 'test', ['name' => 'World']);
 
     [$headers, $body]= explode("\r\n\r\n", $res->output()->bytes(), 2);
-    $this->assertEquals('Hello World', $body);
+    Assert::equals('Hello World', $body);
   }
 
   #[Test, Expect(TemplateNotFoundException::class)]

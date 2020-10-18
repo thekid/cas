@@ -1,7 +1,8 @@
 <?php namespace de\thekid\cas\unittest;
 
-use de\thekid\cas\users\{Authentication, Users, User, NoSuchUser, PasswordMismatch, Authenticated};
+use de\thekid\cas\users\{Authenticated, Authentication, NoSuchUser, PasswordMismatch, User, Users};
 use lang\MethodNotImplementedException;
+use unittest\Assert;
 use util\Secret;
 
 class TestingUsers implements Users {

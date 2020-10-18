@@ -1,15 +1,15 @@
 <?php namespace de\thekid\cas\unittest;
 
-use unittest\TestCase;
+use unittest\Assert;
 use web\io\{TestInput, TestOutput};
 use web\session\ForTesting;
 use web\{Request, Response};
 
-abstract class HandlerTest extends TestCase {
+abstract class HandlerTest {
   protected $sessions;
 
-  /** @return void */
-  public function setUp() {
+  #[Before]
+  public function sessions() {
     $this->sessions= new ForTesting();
   }
 

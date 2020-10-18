@@ -1,10 +1,11 @@
 <?php namespace de\thekid\cas\unittest;
 
-use de\thekid\cas\flow\{Flow, UseService, EnterCredentials, RedirectToService, DisplaySuccess};
+use de\thekid\cas\flow\{DisplaySuccess, EnterCredentials, Flow, RedirectToService, UseService};
 use de\thekid\cas\services\Services;
 use de\thekid\cas\tickets\Tickets;
 use de\thekid\cas\users\{NoSuchUser, PasswordMismatch};
 use de\thekid\cas\{Login, Signed};
+use unittest\{Assert, Test};
 use util\Random;
 
 class LoginTest extends HandlerTest {
@@ -12,10 +13,8 @@ class LoginTest extends HandlerTest {
 
   private $templates, $signed, $flow;
 
-  /** @return void */
-  public function setUp() {
-    parent::setUp();
-    $this->templates= new TestingTemplates();
+  #[Before]
+  public function initialize() {
     $this->tickets= new TestingTickets();
     $this->signed= new Signed('secret');
     $this->flow= new Flow([
@@ -34,33 +33,37 @@ class LoginTest extends HandlerTest {
 
   #[Test]
   public function creates_session_if_ncessary() {
+    $this->templates= new TestingTemplates();
     $this->handle(null, 'GET', '/login');
-    $this->assertNotEquals(null, current($this->sessions->all())->value('token'));
+    Assert::notEquals(null, current($this->sessions->all())->value('token'));
   }
 
   #[Test]
   public function stores_given_service() {
+    $this->templates= new TestingTemplates();
     $session= $this->session(['token' => $token= uniqid()]);
 
     $this->handle($session, 'GET', '/login?service='.self::SERVICE);
-    $this->assertEquals(self::SERVICE, $session->value('service'));
+    Assert::equals(self::SERVICE, $session->value('service'));
   }
 
   #[Test]
   public function overwrites_existing_service() {
+    $this->templates= new TestingTemplates();
     $session= $this->session(['token' => $token= uniqid(), 'service' => '<previous-value>']);
 
     $this->handle($session, 'GET', '/login?service='.self::SERVICE);
-    $this->assertEquals(self::SERVICE, $session->value('service'));
+    Assert::equals(self::SERVICE, $session->value('service'));
   }
 
   #[Test]
   public function shows_forbidden_page_and_does_not_store_invalid_service() {
+    $this->templates= new TestingTemplates();
     $session= $this->session(['token' => $token= uniqid()]);
 
     $this->handle($session, 'GET', '/login?service=invalid' );
-    $this->assertNull($session->value('service'));
-    $this->assertEquals(
+    Assert::null($session->value('service'));
+    Assert::equals(
       [
         'forbidden' => [
           'service' => 'invalid',
@@ -74,6 +77,7 @@ class LoginTest extends HandlerTest {
 
   #[Test]
   public function cannot_authenticate_unknown_user() {
+    $this->templates= new TestingTemplates();
     $session= $this->session(['token' => $token= uniqid()]);
 
     $this->handle($session, 'GET', '/login');
@@ -84,7 +88,7 @@ class LoginTest extends HandlerTest {
       'password' => '...',
     ]);
 
-    $this->assertEquals(
+    Assert::equals(
       [
         'login' => [
           'service' => null,
@@ -109,7 +113,7 @@ class LoginTest extends HandlerTest {
       'password' => 'incorrect',
     ]);
 
-    $this->assertEquals(
+    Assert::equals(
       [
         'login' => [
           'service' => null,
@@ -134,7 +138,7 @@ class LoginTest extends HandlerTest {
       'password' => 'secret',
     ]);
 
-    $this->assertEquals(
+    Assert::equals(
       [
         'username'   => 'root',
         'tokens'     => [],
@@ -157,7 +161,7 @@ class LoginTest extends HandlerTest {
       'password' => 'secret',
     ]);
 
-    $this->assertEquals(
+    Assert::equals(
       [
         'token'   => $token,
         'flow'    => $this->signed->id(3),
@@ -184,7 +188,7 @@ class LoginTest extends HandlerTest {
       'password' => 'secret',
     ]);
 
-    $this->assertEquals(
+    Assert::equals(
       [
         'service' => self::SERVICE,
         'user'    => [
@@ -196,7 +200,7 @@ class LoginTest extends HandlerTest {
       ],
       $this->tickets->validate(0),
     );
-    $this->assertEquals(
+    Assert::equals(
       self::SERVICE.'?ticket='.$this->signed->id(0, $this->tickets->prefix()),
       $res->headers()['Location']
     );

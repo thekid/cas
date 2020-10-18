@@ -1,14 +1,15 @@
 <?php namespace de\thekid\cas\unittest;
 
-use de\thekid\cas\{Validate, Signed};
-use unittest\TestCase;
+use de\thekid\cas\{Signed, Validate};
+use unittest\{Assert, Test};
 use web\io\{TestInput, TestOutput};
 use web\{Request, Response};
 
-class ValidateTest extends TestCase {
+class ValidateTest {
   private $tickets, $signed;
 
   /** @return void */
+  #[Before]
   public function setUp() {
     $this->tickets= new TestingTickets();
     $this->signed= new Signed('testing-secret');
@@ -22,7 +23,7 @@ class ValidateTest extends TestCase {
    * @throws unittest.AssertionFailedError
    */
   private function assertResponse($expected, $actual) {
-    $this->assertEquals(preg_replace('/\s+/', '', $expected), preg_replace('/\s+/', '', $actual));
+    Assert::equals(preg_replace('/\s+/', '', $expected), preg_replace('/\s+/', '', $actual));
   }
 
   /**

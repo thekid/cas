@@ -2,13 +2,14 @@
 
 use de\thekid\cas\Encryption;
 use lang\FormatException;
-use unittest\TestCase;
+use unittest\{Assert, Test, Expect, Values};
 use util\{Random, Secret};
 
-class EncryptionTest extends TestCase {
+class EncryptionTest {
   private $key;
 
   /** @return void */
+  #[Before]
   public function setUp() {
     $this->key= new Random()->bytes(SODIUM_CRYPTO_SECRETBOX_KEYBYTES);
   }
@@ -30,7 +31,7 @@ class EncryptionTest extends TestCase {
   ])]
   public function roundtrip($value) {
     $fixture= new Encryption($this->key);
-    $this->assertEquals($value, $fixture->decrypt($fixture->encrypt($value)));
+    Assert::equals($value, $fixture->decrypt($fixture->encrypt($value)));
   }
 
   #[Test, Expect(FormatException::class), Values([
