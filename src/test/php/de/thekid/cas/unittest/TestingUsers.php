@@ -1,6 +1,7 @@
 <?php namespace de\thekid\cas\unittest;
 
 use de\thekid\cas\users\{Authentication, Users, User, NoSuchUser, PasswordMismatch, Authenticated};
+use lang\MethodNotImplementedException;
 use util\Secret;
 
 class TestingUsers implements Users {
@@ -23,6 +24,11 @@ class TestingUsers implements Users {
     }
 
     return new Authenticated(new User($username, []));
+  }
+
+  /** Returns all users */
+  public function all(?string $filter= null): iterable {
+    throw new MethodNotImplementedException('Not used in tests', __FUNCTION__);
   }
 
   /** Returns a user by a given username */
