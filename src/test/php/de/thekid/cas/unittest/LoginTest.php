@@ -103,6 +103,7 @@ class LoginTest extends HandlerTest {
 
   #[Test]
   public function cannot_authenticate_user_with_incorrect_password() {
+    $this->templates= new TestingTemplates();
     $session= $this->session(['token' => $token= uniqid()]);
 
     $this->handle($session, 'GET', '/login');
@@ -151,6 +152,7 @@ class LoginTest extends HandlerTest {
 
   #[Test]
   public function displays_success() {
+    $this->templates= new TestingTemplates();
     $session= $this->session(['token' => $token= uniqid()]);
 
     $this->handle($session, 'GET', '/login');
@@ -203,6 +205,80 @@ class LoginTest extends HandlerTest {
     Assert::equals(
       self::SERVICE.'?ticket='.$this->signed->id(0, $this->tickets->prefix()),
       $res->headers()['Location']
+    );
+  }
+
+  #[Test]
+  public function issues_ticket_and_redirect_to_service_directly_when_user_in_session() {
+    $session= $this->session(['token' => $token= uniqid(), 'user' => [
+      'username'   => 'root',
+      'tokens'     => [],
+      'mfa'        => false,
+      'attributes' => null,
+    ]]);
+    $res= $this->handle($session, 'GET', '/login?service='.self::SERVICE);
+
+    Assert::equals(
+      [
+        'service' => self::SERVICE,
+        'user'    => [
+          'username'   => 'root',
+          'tokens'     => [],
+          'mfa'        => false,
+          'attributes' => null,
+        ],
+      ],
+      $this->tickets->validate(1),
+    );
+    Assert::equals(
+      self::SERVICE.'?ticket='.$this->signed->id(1, $this->tickets->prefix()),
+      $res->headers()['Location']
+    );
+  }
+
+  #[Test]
+  public function renews_authentication_when_renew_parameter_is_given() {
+    $this->templates= new TestingTemplates();
+    $session= $this->session(['token' => $token= uniqid(), 'user' => [
+      'username'   => 'root',
+      'tokens'     => [],
+      'mfa'        => false,
+      'attributes' => null,
+    ]]);
+    $res= $this->handle($session, 'GET', '/login?renew=true');
+
+    Assert::equals(
+      [
+        'login' => [
+          'service' => null,
+          'token'   => $token,
+          'flow'    => $this->signed->id(1),
+        ]
+      ],
+      $this->templates->rendered()
+    );
+  }
+
+  #[Test]
+  public function renews_authentication_when_session_user_no_longer_exists() {
+    $this->templates= new TestingTemplates();
+    $session= $this->session(['token' => $token= uniqid(), 'user' => [
+      'username'   => 'admin',
+      'tokens'     => [],
+      'mfa'        => false,
+      'attributes' => null,
+    ]]);
+    $res= $this->handle($session, 'GET', '/login');
+
+    Assert::equals(
+      [
+        'login' => [
+          'service' => null,
+          'token'   => $token,
+          'flow'    => $this->signed->id(1),
+        ]
+      ],
+      $this->templates->rendered()
     );
   }
 }

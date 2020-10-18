@@ -3,6 +3,10 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* Added verification on session user existing in user database. If the
+  user has been deleted in the meantime, show login screen!
+  (@thekid)
+
 ## 0.3.0 / 2020-10-18
 
 * Added command to list users, optionally filtered - @thekid

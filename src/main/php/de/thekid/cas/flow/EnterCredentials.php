@@ -11,7 +11,13 @@ class EnterCredentials implements Step {
   public function setup($req, $res, $session) {
 
     // If user is already authenticated, skip to next state
-    if (!$req->param('renew') && $session->value('user')) return;
+    $authenticated= $session->value('user');
+    if ($authenticated && !$req->param('renew')) {
+
+      // Verify user still exists in database. TODO: If tokens or password
+      // have changed, also force reauthentication!
+      if ($this->users->named($authenticated['username'])) return;
+    }
 
     // Show login view
     return new View('login', ['service' => $session->value('service')]);
