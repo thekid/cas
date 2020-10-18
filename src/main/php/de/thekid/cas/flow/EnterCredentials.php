@@ -36,6 +36,6 @@ class EnterCredentials implements Step {
     }
 
     $session->remove('user');
-    return ['failed' => $result];
+    return $error;
   }
 }
