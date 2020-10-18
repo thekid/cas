@@ -3,6 +3,8 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.4.0 / 2020-10-18
+
 * Upgraded bundled Fomantic UI to version 2.8.7 - @thekid
 * Added verification on session user existing in user database. If the
   user has been deleted in the meantime, show login screen!
