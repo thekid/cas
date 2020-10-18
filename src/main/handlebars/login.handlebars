@@ -3,39 +3,37 @@
   {{#*inline "content"}}
     <h1 class="ui header">Login</h1>
 
-    <form id="login" class="ui form {{#if error}}error{{/if}}" method="POST">
+    <form id="login" class="ui form {{#if error}}error{{/if}} attached fluid segment" method="POST">
       <input type="hidden" name="flow" value="{{flow}}">
       <input type="hidden" name="token" value="{{token}}">
 
-      <div class="ui large stacked segment">
-        {{#if service}}
-          <div class="ui info message">You are logging in for {{service}}</div>
-        {{/if}}
-        {{#if error.exception}}
-          <div class="ui error message">An internal error occured. Please try again later!</div>
-        {{/if}}
-        {{#if error.failed}}
-          <div class="ui error message">The username or password given is incorrect.</div>
-        {{/if}}
+      {{#if error.exception}}
+        <div class="ui error message">An internal error occured! Please try again later.</div>
+      {{/if}}
+      {{#if error.failed}}
+        <div class="ui error message">The username or password given is incorrect!</div>
+      {{/if}}
 
-        <div class="field" style="text-align: left">
-          <label for="username">Username</label>
-          <div class="ui left icon input">
-            <i class="user icon"></i>
-            <input name="username" type="text" value="{{request.params.username}}" autocomplete="off">
-          </div>
+      <div class="field" style="text-align: left">
+        <label for="username">Username</label>
+        <div class="ui left icon input">
+          <i class="user icon"></i>
+          <input name="username" type="text" value="{{request.params.username}}" autocomplete="off">
         </div>
-        <div class="field" style="text-align: left">
-          <label for="password">Password</label>
-          <div class="ui left icon input">
-            <i class="lock icon"></i>
-            <input name="password" type="password" value="{{request.params.password}}" autocomplete="off">
-          </div>
-        </div>
-
-        <button class="ui fluid large primary button" type="submit">Login</button>
       </div>
+      <div class="field" style="text-align: left">
+        <label for="password">Password</label>
+        <div class="ui left icon input">
+          <i class="lock icon"></i>
+          <input name="password" type="password" value="{{request.params.password}}" autocomplete="off">
+        </div>
+      </div>
+
+      <button class="ui fluid large primary button" type="submit">Login</button>
     </form>
+    {{#if service}}
+      <div class="ui bottom attached info message">You are logging in for {{service}}</div>
+    {{/if}}
   {{/inline}}
   {{#*inline "script"}}
     <script type="text/javascript">

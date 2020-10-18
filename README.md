@@ -9,8 +9,7 @@ CAS Server
 
 Minimalistic CAS Server in PHP
 
-![Login flow](https://user-images.githubusercontent.com/696742/63349758-5c08d100-c35c-11e9-9f6d-d15f84a1748b.png)
-
+![image](https://user-images.githubusercontent.com/696742/96371316-6a6d9b00-1161-11eb-8662-0d96e23610f7.png)
 
 Setup
 -----
