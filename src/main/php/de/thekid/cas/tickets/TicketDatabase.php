@@ -27,7 +27,7 @@ class TicketDatabase implements Tickets {
    * @return int
    */
   public function create($value) {
-    $this->conn->insert('into ticket (value, created) values (%s, now())', json_encode($value));
+    $this->conn->insert('into ticket (value, created) values (%s, %s)', json_encode($value), Date::now());
     return $this->conn->identity();
   }
 
@@ -48,7 +48,8 @@ class TicketDatabase implements Tickets {
     $this->conn->delete('from ticket where created < %s', $timeout);
 
     // Verify timeout has not been reached
-    if ($timeout->isAfter($ticket['created'])) return null;
+    $created= $ticket['created'] instanceof Date ? $ticket['created'] : new Date($ticket['created']);
+    if ($timeout->isAfter($created)) return null;
 
     return json_decode($ticket['value'], true);
   }
