@@ -3,6 +3,7 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #10: Use record syntax for User - @thekid
 * Merged PR #9: Use enum syntax for ServiceResponse - @thekid
 
 ## 0.4.0 / 2020-10-18
