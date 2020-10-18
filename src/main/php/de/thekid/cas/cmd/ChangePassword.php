@@ -12,9 +12,7 @@ class ChangePassword extends Administration {
 
   #[Arg(position: 0)]
   public function setUser(string $user) {
-    if (null === ($this->user= $this->users->named($user))) {
-      throw new IllegalArgumentException('No such user '.$user);
-    }
+    $this->user= $this->users->named($user) ?? throw new IllegalArgumentException('No such user '.$user);
   }
 
   #[Arg]
