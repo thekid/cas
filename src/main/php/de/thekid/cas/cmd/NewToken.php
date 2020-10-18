@@ -31,7 +31,7 @@ class NewToken extends Administration {
       '* otpauth://totp/%s?secret=%s&label=%s',
       $this->user->username(),
       $random->encoded(),
-      $this->name,
+      urlencode($this->name),
     );
 
     $this->users->newToken($this->user, $this->name, $this->encryption->encrypt($random->bytes()));

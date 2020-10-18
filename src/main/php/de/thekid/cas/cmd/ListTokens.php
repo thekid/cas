@@ -23,7 +23,7 @@ class ListTokens extends Administration {
         '* otpauth://totp/%s?secret=%s&label=%s',
         $this->user->username(),
         new SecretBytes($this->encryption->decrypt($secret))->encoded(),
-        $name,
+        urlencode($name),
       );
       $count++;
     }
