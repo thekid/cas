@@ -9,17 +9,17 @@ use web\io\{TestOutput, Buffered};
 
 class TemplateEngineTest extends TestCase {
 
-  <<test>>
+  #[Test]
   public function can_create_with_path() {
     new TemplateEngine(new Path('.'));
   }
 
-  <<test>>
+  #[Test]
   public function can_create_with_template_loader() {
     new TemplateEngine(new InMemory([]));
   }
 
-  <<test>>
+  #[Test]
   public function render_template_to_response() {
     $fixture= new TemplateEngine(new InMemory(['test' => 'Hello {{name}}']));
 
@@ -30,7 +30,7 @@ class TemplateEngineTest extends TestCase {
     $this->assertEquals('Hello World', $body);
   }
 
-  <<test, expect(TemplateNotFoundException::class)>>
+  #[Test, Expect(TemplateNotFoundException::class)]
   public function non_existant_template() {
     $fixture= new TemplateEngine(new InMemory([]));
     $fixture->render(new Response(new TestOutput()), 'non-existant');

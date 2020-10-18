@@ -32,13 +32,13 @@ class LoginTest extends HandlerTest {
   /** @return web.Handler */
   protected fn handler() => new Login($this->templates, $this->flow, $this->sessions, $this->signed);
 
-  <<test>>
+  #[Test]
   public function creates_session_if_ncessary() {
     $this->handle(null, 'GET', '/login');
     $this->assertNotEquals(null, current($this->sessions->all())->value('token'));
   }
 
-  <<test>>
+  #[Test]
   public function stores_given_service() {
     $session= $this->session(['token' => $token= uniqid()]);
 
@@ -46,7 +46,7 @@ class LoginTest extends HandlerTest {
     $this->assertEquals(self::SERVICE, $session->value('service'));
   }
 
-  <<test>>
+  #[Test]
   public function overwrites_existing_service() {
     $session= $this->session(['token' => $token= uniqid(), 'service' => '<previous-value>']);
 
@@ -54,7 +54,7 @@ class LoginTest extends HandlerTest {
     $this->assertEquals(self::SERVICE, $session->value('service'));
   }
 
-  <<test>>
+  #[Test]
   public function shows_forbidden_page_and_does_not_store_invalid_service() {
     $session= $this->session(['token' => $token= uniqid()]);
 
@@ -72,7 +72,7 @@ class LoginTest extends HandlerTest {
     );
   }
 
-  <<test>>
+  #[Test]
   public function cannot_authenticate_unknown_user() {
     $session= $this->session(['token' => $token= uniqid()]);
 
@@ -97,7 +97,7 @@ class LoginTest extends HandlerTest {
     );
   }
 
-  <<test>>
+  #[Test]
   public function cannot_authenticate_user_with_incorrect_password() {
     $session= $this->session(['token' => $token= uniqid()]);
 
@@ -122,7 +122,7 @@ class LoginTest extends HandlerTest {
     );
   }
 
-  <<test>>
+  #[Test]
   public function authenticate_registers_user() {
     $session= $this->session(['token' => $token= uniqid()]);
 
@@ -145,7 +145,7 @@ class LoginTest extends HandlerTest {
     );
   }
 
-  <<test>>
+  #[Test]
   public function displays_success() {
     $session= $this->session(['token' => $token= uniqid()]);
 
@@ -172,7 +172,7 @@ class LoginTest extends HandlerTest {
     );
   }
 
-  <<test>>
+  #[Test]
   public function issues_ticket_and_redirect_to_service() {
     $session= $this->session(['token' => $token= uniqid()]);
 

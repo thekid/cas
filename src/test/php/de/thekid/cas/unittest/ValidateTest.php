@@ -41,12 +41,12 @@ class ValidateTest extends TestCase {
     return $res->output()->body();
   }
 
-  <<test>>
+  #[Test]
   public function can_create() {
     new Validate($this->tickets, $this->signed);
   }
 
-  <<test>>
+  #[Test]
   public function validation_success() {
     $ticket= $this->signed->id(
       $this->tickets->create(['user' => ['username' => 'test'], 'service' => 'http://example.org']),
@@ -62,7 +62,7 @@ class ValidateTest extends TestCase {
     );
   }
 
-  <<test>>
+  #[Test]
   public function missing_ticket_and_service_parameters_xml() {
     $this->assertResponse(
       '<cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
@@ -74,7 +74,7 @@ class ValidateTest extends TestCase {
     );
   }
 
-  <<test>>
+  #[Test]
   public function missing_ticket_parameter() {
     $this->assertResponse(
       '<cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
@@ -86,7 +86,7 @@ class ValidateTest extends TestCase {
     );
   }
 
-  <<test>>
+  #[Test]
   public function missing_service_parameter() {
     $this->assertResponse(
       '<cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
@@ -98,7 +98,7 @@ class ValidateTest extends TestCase {
     );
   }
 
-  <<test>>
+  #[Test]
   public function invalid_ticket_parameter() {
     $this->assertResponse(
       '<cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
@@ -110,7 +110,7 @@ class ValidateTest extends TestCase {
     );
   }
 
-  <<test>>
+  #[Test]
   public function missing_ticket() {
     $ticket= $this->signed->id(1, $this->tickets->prefix());
     $response= sprintf('
@@ -124,7 +124,7 @@ class ValidateTest extends TestCase {
     $this->assertResponse($response, $this->handle('/?ticket='.$ticket.'&service=http://example.org'));
   }
 
-  <<test>>
+  #[Test]
   public function invalid_service() {
     $ticket= $this->signed->id(
       $this->tickets->create(['user' => ['username' => 'test'], 'service' => 'http://example.org']),
@@ -140,7 +140,7 @@ class ValidateTest extends TestCase {
     );
   }
 
-  <<test>>
+  #[Test]
   public function success_using_explicit_xml_format() {
     $ticket= $this->signed->id(
       $this->tickets->create(['user' => ['username' => 'test'], 'service' => 'http://example.org']),
@@ -156,7 +156,7 @@ class ValidateTest extends TestCase {
     );
   }
 
-  <<test>>
+  #[Test]
   public function success_using_json_format() {
     $ticket= $this->signed->id(
       $this->tickets->create(['user' => ['username' => 'test'], 'service' => 'http://example.org']),
@@ -174,7 +174,7 @@ class ValidateTest extends TestCase {
     );
   }
 
-  <<test>>
+  #[Test]
   public function failure_using_json_format() {
     $this->assertResponse(
       '{
