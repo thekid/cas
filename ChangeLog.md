@@ -3,6 +3,11 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.3.0 / 2020-10-18
+
+* Made database implementation compatible with SQLite - @thekid
+* Upgraded dependencies, making this compatible with PHP 8 - @thekid
+
 ## 0.2.0 / 2019-08-21
 
 * Use more compact XML layout for service responses - @thekid
