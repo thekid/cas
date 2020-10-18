@@ -4,13 +4,14 @@ use com\google\authenticator\SecretBytes;
 use de\thekid\cas\Encryption;
 use de\thekid\cas\users\Users;
 use lang\IllegalArgumentException;
+use util\cmd\Arg;
 
 class ListTokens extends Administration {
   private $user;
 
   public function __construct(private Users $users, private Encryption $encryption) { }
 
-  <<arg(['position' => 0])>>
+  #[Arg(position: 0)]
   public function setUser(string $user) {
     if (null === ($this->user= $this->users->named($user))) {
       throw new IllegalArgumentException('No such user '.$user);

@@ -2,20 +2,21 @@
 
 use de\thekid\cas\users\Users;
 use lang\IllegalArgumentException;
+use util\cmd\Arg;
 
 class RemoveToken extends Administration {
   private $user, $name;
 
   public function __construct(private Users $users) { }
 
-  <<arg(['position' => 0])>>
+  #[Arg(position: 0)]
   public function setUser(string $user) {
     if (null === ($this->user= $this->users->named($user))) {
       throw new IllegalArgumentException('No such user '.$user);
     }
   }
 
-  <<arg(['position' => 1])>>
+  #[Arg(position: 1)]
   public function setName(string $name) {
     $tokens= $this->user->tokens();
     if (!isset($tokens[$name])) {

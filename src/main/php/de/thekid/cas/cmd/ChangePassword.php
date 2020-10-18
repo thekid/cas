@@ -2,6 +2,7 @@
 
 use de\thekid\cas\users\Users;
 use lang\IllegalArgumentException;
+use util\cmd\Arg;
 use util\{Secret, Random};
 
 class ChangePassword extends Administration {
@@ -9,14 +10,14 @@ class ChangePassword extends Administration {
 
   public function __construct(private Users $users) { }
 
-  <<arg(['position' => 0])>>
+  #[Arg(position: 0)]
   public function setUser(string $user) {
     if (null === ($this->user= $this->users->named($user))) {
       throw new IllegalArgumentException('No such user '.$user);
     }
   }
 
-  <<arg>>
+  #[Arg]
   public function setPassword(?string $password= null) {
     if (null === $password) {
       $password= bin2hex(new Random()->bytes(8));

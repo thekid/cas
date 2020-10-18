@@ -2,6 +2,7 @@
 
 use de\thekid\cas\users\Users;
 use lang\IllegalArgumentException;
+use util\cmd\Arg;
 use util\{Secret, Random};
 
 class NewUser extends Administration {
@@ -9,7 +10,7 @@ class NewUser extends Administration {
 
   public function __construct(private Users $users) { }
 
-  <<arg(['position' => 0])>>
+  #[Arg(position: 0)]
   public function setUser(string $user) {
     if (null !== $this->users->named($user)) {
       throw new IllegalArgumentException('User '.$user.' already exists');
@@ -17,7 +18,7 @@ class NewUser extends Administration {
     $this->user= $user;
   }
 
-  <<arg>>
+  #[Arg]
   public function setPassword(?string $password= null) {
     if (null === $password) {
       $password= bin2hex(new Random()->bytes(8));

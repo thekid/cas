@@ -2,13 +2,14 @@
 
 use de\thekid\cas\users\Users;
 use lang\IllegalArgumentException;
+use util\cmd\Arg;
 
 class RemoveUser extends Administration {
   private $user;
 
   public function __construct(private Users $users) { }
 
-  <<arg(['position' => 0])>>
+  #[Arg(position: 0)]
   public function setUser(string $user) {
     if (null === ($this->user= $this->users->named($user))) {
       throw new IllegalArgumentException('No such user '.$user);
