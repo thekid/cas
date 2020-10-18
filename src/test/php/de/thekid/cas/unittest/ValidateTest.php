@@ -8,9 +8,8 @@ use web\{Request, Response};
 class ValidateTest {
   private $tickets, $signed;
 
-  /** @return void */
   #[Before]
-  public function setUp() {
+  public function initialize() {
     $this->tickets= new TestingTickets();
     $this->signed= new Signed('testing-secret');
   }

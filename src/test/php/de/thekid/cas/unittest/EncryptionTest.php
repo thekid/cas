@@ -8,9 +8,8 @@ use util\{Random, Secret};
 class EncryptionTest {
   private $key;
 
-  /** @return void */
   #[Before]
-  public function setUp() {
+  public function randomKey() {
     $this->key= new Random()->bytes(SODIUM_CRYPTO_SECRETBOX_KEYBYTES);
   }
 
