@@ -5,6 +5,7 @@ CAS Server change log
 
 ## 0.3.0 / 2020-10-18
 
+* Added command to list users, optionally filtered - @thekid
 * Made database implementation compatible with SQLite - @thekid
 * Upgraded dependencies, making this compatible with PHP 8 - @thekid
 
