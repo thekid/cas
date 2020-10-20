@@ -1,6 +1,7 @@
 <?php namespace de\thekid\cas\unittest;
 
-use de\thekid\cas\{Signed, Validate};
+use de\thekid\cas\Signed;
+use de\thekid\cas\impl\Validate;
 use unittest\{Assert, Test};
 use web\io\{TestInput, TestOutput};
 use web\{Request, Response};

@@ -3,6 +3,7 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* Rearranged code into `de.thekid.cas.impl` package - @thekid
 * Merged PR #10: Use record syntax for User - @thekid
 * Merged PR #9: Use enum syntax for ServiceResponse - @thekid
 

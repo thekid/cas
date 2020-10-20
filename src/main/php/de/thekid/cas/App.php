@@ -1,5 +1,6 @@
 <?php namespace de\thekid\cas;
 
+use de\thekid\cas\impl\{Login, Logout, Validate, AuthenticationFlow};
 use inject\{Injector, ConfiguredBindings};
 use io\Path;
 use security\credentials\{Credentials, FromEnvironment, FromFile};

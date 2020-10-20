@@ -1,4 +1,4 @@
-<?php namespace de\thekid\cas;
+<?php namespace de\thekid\cas\impl;
 
 use xml\{Tree, Node};
 

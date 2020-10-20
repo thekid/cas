@@ -1,5 +1,6 @@
-<?php namespace de\thekid\cas;
+<?php namespace de\thekid\cas\impl;
 
+use de\thekid\cas\Templating;
 use web\Handler;
 use web\session\Sessions;
 

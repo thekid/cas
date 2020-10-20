@@ -1,6 +1,6 @@
 <?php namespace de\thekid\cas\unittest;
 
-use de\thekid\cas\Logout;
+use de\thekid\cas\impl\Logout;
 use unittest\{Assert, Test};
 
 class LogoutTest extends HandlerTest {

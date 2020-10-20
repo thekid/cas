@@ -1,5 +1,6 @@
-<?php namespace de\thekid\cas;
+<?php namespace de\thekid\cas\impl;
 
+use de\thekid\cas\Signed;
 use de\thekid\cas\tickets\Tickets;
 use web\Handler;
 

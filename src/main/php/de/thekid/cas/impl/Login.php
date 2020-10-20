@@ -1,6 +1,7 @@
-<?php namespace de\thekid\cas;
+<?php namespace de\thekid\cas\impl;
 
 use de\thekid\cas\flow\Flow;
+use de\thekid\cas\{Templating, Signed};
 use util\Random;
 use web\session\Sessions;
 use web\{Handler, Error};

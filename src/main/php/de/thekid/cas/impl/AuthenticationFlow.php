@@ -1,4 +1,4 @@
-<?php namespace de\thekid\cas;
+<?php namespace de\thekid\cas\impl;
 
 use de\thekid\cas\flow\{Flow, UseService, EnterCredentials, QueryMFACode, RedirectToService, DisplaySuccess};
 use inject\Bindings;

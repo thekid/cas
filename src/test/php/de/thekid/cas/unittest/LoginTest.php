@@ -1,10 +1,11 @@
 <?php namespace de\thekid\cas\unittest;
 
+use de\thekid\cas\Signed;
 use de\thekid\cas\flow\{DisplaySuccess, EnterCredentials, Flow, RedirectToService, UseService};
+use de\thekid\cas\impl\Login;
 use de\thekid\cas\services\Services;
 use de\thekid\cas\tickets\Tickets;
 use de\thekid\cas\users\{NoSuchUser, PasswordMismatch};
-use de\thekid\cas\{Login, Signed};
 use unittest\{Assert, Test};
 use util\Random;
 
