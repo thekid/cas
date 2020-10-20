@@ -17,6 +17,7 @@ class App extends Application {
   /** @return var */
   public function routes() {
     $webroot= $this->environment->webroot();
+    $files= new FilesFrom(new Path($webroot, 'src/main/webapp'));
     $credentials= new Credentials(new FromEnvironment(), new FromFile(new Path($webroot, 'credentials')));
     $inject= new Injector(
       new ConfiguredBindings($credentials->expanding($this->environment->properties('inject'))),
@@ -25,7 +26,6 @@ class App extends Application {
       new AuthenticationFlow(),
     ); 
 
-    $files= new FilesFrom(new Path($webroot, 'src/main/webapp'));
     return [
       '/favicon.ico'     => $files,
       '/static'          => $files,
