@@ -1,0 +1,51 @@
+{{#> layout}}
+  {{#*inline "title"}}Scopes{{/inline}}
+  {{#*inline "content"}}
+    <h1 class="ui header">Scopes</h1>
+
+    <form id="scopes" class="ui form {{#if error}}error{{/if}} attached fluid segment" method="POST">
+      <input type="hidden" name="flow" value="{{flow}}">
+      <input type="hidden" name="token" value="{{token}}">
+
+      {{#if error.failed}}
+        <div class="ui error message">Please select at least one scope.</div>
+      {{/if}}
+
+      {{#if granted}}
+        <h4 class="ui dividing header">{{app}} would like additional permissions:</h4>
+      {{else}}
+        <h4 class="ui dividing header">{{app}} would like to:</h4>
+      {{/if}}
+
+      {{#each granted}}
+        <div class="field" style="text-align: left">
+          <div class="ui checkbox">
+            <input type="checkbox" name="scopes[{{@key}}]" {{#if .}}checked{{/if}}>
+            <label>Access your {{@key}} information <em>(previously {{#if .}}granted{{else}}rejected{{/if}})</em></label>
+          </div>
+        </div>
+      {{/each}}
+      {{#each delta}}
+        <div class="field" style="text-align: left">
+          <div class="ui checkbox">
+            <input type="checkbox" name="scopes[{{@key}}]" {{#if .}}checked{{/if}}>
+            <label>Access your {{@key}} information</label>
+          </div>
+        </div>
+      {{/each}}
+
+      <button name="allow" class="ui fluid large primary button" type="submit">Authorize</button>
+    </form>
+    {{#if service}}
+      <div class="ui bottom attached info message">You are logging in for {{service}}</div>
+    {{/if}}
+  {{/inline}}
+  {{#*inline "script"}}
+    <script type="text/javascript">
+      var $form = document.querySelector('#scopes');
+      $form.onsubmit = function() {
+        $form.classList.add('loading');
+      };
+    </script>
+  {{/inline}}
+{{/layout}}
