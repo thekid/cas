@@ -3,6 +3,8 @@
 language: php
 
 php:
+  - 7.0
+  - 7.1
   - 7.2
   - 7.3
   - 7.4
@@ -14,7 +16,7 @@ matrix:
 
 install:
   - |
-    if php -r 'exit((int)extension_loaded("sodium"));'; then
+    if php -r 'exit((int)(extension_loaded("sodium") || extension_loaded("openssl")));'; then
       git clone -b stable https://github.com/jedisct1/libsodium.git
       cd libsodium && sudo ./configure && sudo make check && sudo make install && cd ..
       pecl install libsodium

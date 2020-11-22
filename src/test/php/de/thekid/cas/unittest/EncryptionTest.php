@@ -10,7 +10,7 @@ class EncryptionTest {
 
   #[Before]
   public function randomKey() {
-    $this->key= new Random()->bytes(SODIUM_CRYPTO_SECRETBOX_KEYBYTES);
+    $this->key= Encryption::randomKey();
   }
 
   #[Test]
@@ -19,8 +19,8 @@ class EncryptionTest {
   }
 
   #[Test]
-  public function can_create_with_secret() {
-    new Encryption(new Secret($this->key));
+  public function can_create_with_string() {
+    new Encryption($this->key->reveal());
   }
 
   #[Test, Values([
