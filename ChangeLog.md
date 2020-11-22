@@ -3,6 +3,11 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.5.0 / 2020-11-22
+
+* Merged PR #12: Support OpenSSL (as well as Sodium) extensions for
+  encryption, thereby adding support for PHP 7.0 and PHP 7.1
+  (@thekid)
 * Rearranged code into `de.thekid.cas.impl` package - @thekid
 * Merged PR #10: Use record syntax for User - @thekid
 * Merged PR #9: Use enum syntax for ServiceResponse - @thekid
