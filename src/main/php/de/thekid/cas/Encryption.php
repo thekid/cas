@@ -22,8 +22,8 @@ class Encryption {
     } else if (extension_loaded('openssl')) {
       self::$klength= openssl_cipher_iv_length('DES');
       self::$nlength= openssl_cipher_iv_length('DES');
-      self::$encrypt= fn($value, $nonce, $key) => openssl_encrypt($value, 'DES', $key->reveal(),  0, $nonce);
-      self::$decrypt= fn($cipher, $nonce, $key) => openssl_decrypt($cipher, 'DES', $key->reveal(),  0, $nonce);
+      self::$encrypt= fn($value, $nonce, $key) => openssl_encrypt($value, 'DES', $key->reveal(), 0, $nonce);
+      self::$decrypt= fn($cipher, $nonce, $key) => openssl_decrypt($cipher, 'DES', $key->reveal(), 0, $nonce);
     } else {
       throw new IllegalAccessException('Expected either sodium or openssl extension to be loaded');
     }
