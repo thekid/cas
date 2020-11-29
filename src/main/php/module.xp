@@ -1,0 +1,9 @@
+<?php namespace de\thekid\cas;
+
+use util\cmd\Commands;
+
+module thekid/cas {
+  public function initialize() {
+    Commands::registerPackage('de.thekid.cas.cmd');
+  }
+}

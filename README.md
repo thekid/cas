@@ -69,7 +69,7 @@ Running
 Start the server:
 
 ```sh
-$ xp -supervise web -c src/main/etc/local de.thekid.cas.App
+$ xp serve -c src/main/etc/local
 ```
 
 *Now open http://localhost:8080/login in your browser.*
@@ -79,19 +79,19 @@ User management
 
 ```sh
 # Create a new user; generating a random password if necessary
-$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.NewUser <user> [--password=<password>]
+$ xp cmd -c src/main/etc/local NewUser <user> [--password=<password>]
 
 # Change a user's password
-$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.ChangePassword <user> [--password=<password>]
+$ xp cmd -c src/main/etc/local ChangePassword <user> [--password=<password>]
 
 # Remove an existing user
-$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.RemoveUser <user>
+$ xp cmd -c src/main/etc/local RemoveUser <user>
 
 # List all users
-$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.ListUsers
+$ xp cmd -c src/main/etc/local ListUsers
 
 # Filter users on their username. Use * to match any character
-$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.ListUsers 't*'
+$ xp cmd -c src/main/etc/local ListUsers 't*'
 ```
 
 Setting up MFA
@@ -99,12 +99,12 @@ Setting up MFA
 
 ```sh
 # Create a new token
-$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.NewToken <user> [--name=<name>]
+$ xp cmd -c src/main/etc/local NewToken <user> [--name=<name>]
 
 # List existing tokens
-$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.ListTokens <user>
+$ xp cmd -c src/main/etc/local ListTokens <user>
 
 # Remove an existing token
-$ xp cmd -c src/main/etc/local/ de.thekid.cas.cmd.RemoveToken <user> <name>
+$ xp cmd -c src/main/etc/local RemoveToken <user> <name>
 ```
 

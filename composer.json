@@ -23,5 +23,8 @@
   },
   "require-dev": {
     "xp-framework/unittest": "^11.0"
+  },
+  "scripts": {
+    "serve": "xp -supervise web -s de.thekid.cas.App"
   }
 }
