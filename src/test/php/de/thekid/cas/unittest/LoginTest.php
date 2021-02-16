@@ -30,7 +30,7 @@ class LoginTest extends HandlerTest {
 
 
   /** @return web.Handler */
-  protected fn handler() => new Login($this->templates, $this->flow, $this->sessions, $this->signed);
+  protected fn handler() => new Login($this->templates, $this->sessions, $this->signed)->using($this->flow);
 
   #[Test]
   public function creates_session_if_ncessary() {

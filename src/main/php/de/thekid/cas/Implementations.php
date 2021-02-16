@@ -4,7 +4,9 @@ use de\thekid\cas\services\{Services, AllowMatching};
 use de\thekid\cas\tickets\{Tickets, TicketDatabase};
 use de\thekid\cas\users\{Users, UserDatabase};
 use inject\Bindings;
+use lang\Environment;
 use rdbms\DriverManager;
+use web\session\InFileSystem;
 
 /** Default implementations for services, users and tickets */
 class Implementations extends Bindings {
@@ -19,5 +21,6 @@ class Implementations extends Bindings {
     $inject->bind(Services::class, new AllowMatching($inject->get('string', 'services')));
     $inject->bind(Users::class, new UserDatabase($conn));
     $inject->bind(Tickets::class, new TicketDatabase($conn));
+    $inject->bind(Tokens::class, new Tokens(new InFileSystem(Environment::tempDir())));
   }
 }

@@ -13,14 +13,20 @@ use web\{Handler, Error};
  */
 class Login implements Handler {
   private const RAND = 8;
+  private $flow;
 
   /** Creates a new login page flow */
   public function __construct(
     private Templating $templates,
-    private Flow $flow,
     private Sessions $sessions,
-    private Signed $signed,
+    private Signed $signed
   ) { }
+
+  /** Sets flow instance */
+  public function using(Flow $flow): self {
+    $this->flow= $flow;
+    return $this;
+  }
 
   /** @return var */
   public function handle($req, $res) {
