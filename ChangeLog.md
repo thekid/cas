@@ -3,6 +3,11 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.6.0 / 2021-03-14
+
+* Dropped dependency on deprecated `xp-lang/xp-enums` library now that
+  the XP Compiler supports native PHP 8.1 enums
+  (@thekid)
 * QA: Simplified code using the new `web.Environment::path()` method
   (@thekid)
 
