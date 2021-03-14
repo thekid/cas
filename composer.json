@@ -9,7 +9,7 @@
     "xp-framework/command": "^10.0",
     "xp-framework/rdbms": "^13.0",
     "xp-framework/xml": "^10.0",
-    "xp-forge/web": "^2.0",
+    "xp-forge/web": "^2.6",
     "xp-forge/sessions": "^2.0",
     "xp-forge/inject": "^5.0",
     "xp-forge/handlebars": "^5.0",
