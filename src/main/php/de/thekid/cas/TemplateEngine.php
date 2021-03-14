@@ -2,7 +2,6 @@
 
 use com\github\mustache\templates\Templates;
 use com\handlebarsjs\{HandlebarsEngine, FilesIn};
-use io\Path;
 
 /**
  * Template engine based on Handlebars
@@ -13,7 +12,7 @@ class TemplateEngine implements Templating {
   private $backing;
 
   /** Creates a new template engine */
-  public function __construct(Path|Templates $templates) {
+  public function __construct(string|Path|Templates $templates) {
     $this->backing= new HandlebarsEngine()
       ->withHelper('size', fn($in, $context, $options) => sizeof($options[0]))
       ->withHelper('encode', fn($in, $context, $options) => rawurlencode($options[0]))

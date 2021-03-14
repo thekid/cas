@@ -3,6 +3,9 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* QA: Simplified code using the new `web.Environment::path()` method
+  (@thekid)
+
 ## 0.5.0 / 2020-11-22
 
 * Merged PR #12: Support OpenSSL (as well as Sodium) extensions for

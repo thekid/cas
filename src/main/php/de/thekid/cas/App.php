@@ -2,7 +2,6 @@
 
 use de\thekid\cas\impl\{Login, Logout, Validate, AuthenticationFlow};
 use inject\{Injector, ConfiguredBindings};
-use io\Path;
 use security\credentials\{Credentials, FromEnvironment, FromFile};
 use web\handler\FilesFrom;
 use web\{Application, Filters};
@@ -17,13 +16,12 @@ class App extends Application {
 
   /** @return var */
   public function routes() {
-    $webroot= $this->environment->webroot();
-    $files= new FilesFrom(new Path($webroot, 'src/main/webapp'));
-    $credentials= new Credentials(new FromEnvironment(), new FromFile(new Path($webroot, 'credentials')));
+    $files= new FilesFrom($this->environment->path('src/main/webapp'));
+    $credentials= new Credentials(new FromEnvironment(), new FromFile($this->environment->path('credentials')));
     $inject= new Injector(
       new ConfiguredBindings($credentials->expanding($this->environment->properties('inject'))),
       new Implementations(),
-      new Frontend($webroot, 'dev' === $this->environment->profile()),
+      new Frontend($this->environment->path('src/main/handlebars'), 'dev' === $this->environment->profile()),
       new AuthenticationFlow(),
     ); 
 
