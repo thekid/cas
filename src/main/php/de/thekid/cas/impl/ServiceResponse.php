@@ -4,7 +4,7 @@ use xml\{Tree, Node};
 
 /** CAS service response - in XML and JSON */
 abstract class ServiceResponse {
-  public static $XML= new class() extends ServiceResponse {
+  public static $XML= new class() extends self {
     public function success($user) {
       $n= new Node('cas:authenticationSuccess')->withChild(new Node('cas:user', $user['username']));
       if (isset($user['attributes'])) {
@@ -30,7 +30,7 @@ abstract class ServiceResponse {
       $response->send($tree->getSource(INDENT_DEFAULT), 'text/xml');
     }
   };
-  public static $JSON= new class() extends ServiceResponse {
+  public static $JSON= new class() extends self {
     public function success($user) {
       $success= ['user' => $user['username']];
       if (isset($user['attributes'])) {

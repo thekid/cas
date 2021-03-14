@@ -5,7 +5,7 @@
 
   "require": {
     "xp-framework/core": "^10.0",
-    "xp-framework/compiler": "^6.0",
+    "xp-framework/compiler": "^6.3",
     "xp-framework/command": "^10.0",
     "xp-framework/rdbms": "^13.0",
     "xp-framework/xml": "^10.0",
