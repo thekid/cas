@@ -4,20 +4,20 @@
   "license": "BSD",
 
   "require": {
-    "xp-framework/core": "^10.0",
-    "xp-framework/compiler": "^6.3",
-    "xp-framework/command": "^10.0",
+    "xp-framework/core": "^11.0",
+    "xp-framework/compiler": "^8.0",
+    "xp-framework/command": "^11.0",
     "xp-framework/rdbms": "^13.0",
-    "xp-framework/xml": "^10.0",
-    "xp-forge/web": "^2.6",
+    "xp-framework/xml": "^11.0",
+    "xp-forge/web": "^3.0",
     "xp-forge/sessions": "^2.0",
     "xp-forge/inject": "^5.0",
-    "xp-forge/handlebars": "^5.0",
+    "xp-forge/handlebars": "^7.0",
     "xp-forge/hashing": "^2.0",
     "xp-forge/credentials": "^2.0",
     "xp-forge/google-authenticator": "^5.0",
     "xp-lang/php-compact-methods": "^1.0",
-    "xp-lang/xp-records": "^1.0",
+    "xp-lang/xp-records": "^2.0",
     "php" : ">=7.0.0"
   },
   "require-dev": {
