@@ -6,7 +6,7 @@ use com\handlebarsjs\{HandlebarsEngine, FilesIn};
 /**
  * Template engine based on Handlebars
  *
- * @test  xp://de.thekid.cas.unittest.TemplateEngineTest
+ * @test  de.thekid.cas.unittest.TemplateEngineTest
  */
 class TemplateEngine implements Templating {
   private $backing;
@@ -30,11 +30,8 @@ class TemplateEngine implements Templating {
    */
   public function render($response, $name, $context= []) {
     $response->header('Content-Type', 'text/html; charset=utf-8');
-    $out= $response->stream();
-    try {
+    using ($out= $response->stream()) {
       $this->backing->write($this->backing->load($name), $context + ['scope' => $name], $out);
-    } finally {
-      $out->close();
     }
   }
 }
