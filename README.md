@@ -8,7 +8,7 @@ CAS Server
 [![Supports PHP 8.0+](https://raw.githubusercontent.com/xp-framework/web/master/static/php-8_0plus.svg)](http://php.net/)
 ![Less than 1000 lines](https://raw.githubusercontent.com/xp-framework/web/master/static/less-than-1000LOC.png)
 
-Minimalistic CAS Server in PHP
+Minimalistic [CAS](https://apereo.github.io/cas/) Server in PHP
 
 ![image](https://user-images.githubusercontent.com/696742/96371316-6a6d9b00-1161-11eb-8662-0d96e23610f7.png)
 
