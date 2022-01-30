@@ -53,7 +53,10 @@ abstract class ServiceResponse {
 
   /** Creates a new ServiceResponse instance for a given format name. Defaults to XML */
   public static function forFormat(?string $name): self {
-    return 'json' === strtolower($name) ? self::$JSON : self::$XML;
+    return match (strtolower($name ?? 'xml')) {
+      'json' => self::$JSON,
+      'xml'  => self::$XML,
+    };
   }
 
   /**

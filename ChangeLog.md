@@ -3,6 +3,8 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* Fixed warnings about passing NULL to strings in PHP 8.1+ - @thekid
+
 ## 0.6.0 / 2021-03-14
 
 * Dropped dependency on deprecated `xp-lang/xp-enums` library now that

@@ -22,7 +22,7 @@ class Signed {
 
   /** Verifies a signed string, returning the underlying ID */
   public function verify(?string $signed, string $prefix= ''): ?int {
-    if (2 === sscanf($signed, $prefix.'%d-%s', $id, $hash)) {
+    if (null !== $signed && 2 === sscanf($signed, $prefix.'%d-%s', $id, $hash)) {
       if ($hash === md5($id.$this->secret->reveal())) return $id;
     }
     return null;

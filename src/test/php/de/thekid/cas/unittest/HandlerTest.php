@@ -43,7 +43,7 @@ abstract class HandlerTest {
    * @param  [:string] $payload
    * @return web.Response
    */
-  protected function handle($session, $method= 'GET', $uri= '/', $payload= null) {
+  protected function handle($session, $method= 'GET', $uri= '/', $payload= '') {
     $headers= $session ? ['Cookie' => $this->sessions->name().'='.$session->id()] : [];
 
     $req= new Request(new TestInput($method, $uri, $headers, $payload));
