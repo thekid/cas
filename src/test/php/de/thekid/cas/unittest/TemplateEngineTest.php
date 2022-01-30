@@ -23,7 +23,7 @@ class TemplateEngineTest {
   public function render_template_to_response() {
     $fixture= new TemplateEngine(new InMemory(['test' => 'Hello {{name}}']));
 
-    $res= new Response(new TestOutput()->using(Buffered::class));
+    $res= new Response(new TestOutput(Buffered::class));
     $fixture->render($res, 'test', ['name' => 'World']);
 
     [$headers, $body]= explode("\r\n\r\n", $res->output()->bytes(), 2);
