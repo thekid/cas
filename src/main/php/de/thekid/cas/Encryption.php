@@ -4,16 +4,16 @@ use lang\{FormatException, IllegalAccessException};
 use util\{Random, Secret};
 
 /**
- * Encryption using Sodium library
+ * Encryption using either Sodium or OpenSSL libraries for encryption
  *
- * @test  xp://de.thekid.cas.unittest.EncryptionTest
+ * @test  de.thekid.cas.unittest.EncryptionTest
  * @see   https://deliciousbrains.com/php-encryption-methods/
  */
 class Encryption {
   private $key;
   private static $random, $nlength, $klength, $encrypt, $decrypt;
 
-  static function __static() {
+  static {
     if (extension_loaded('sodium')) {
       self::$nlength= SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
       self::$klength= SODIUM_CRYPTO_SECRETBOX_KEYBYTES;
