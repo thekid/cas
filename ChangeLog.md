@@ -3,6 +3,8 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.7.0 / 2022-01-30
+
 * Upgrade dependencies to newest version - @thekid
 * Fixed warnings about passing NULL to strings in PHP 8.1+ - @thekid
 
