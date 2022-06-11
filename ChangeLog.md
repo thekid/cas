@@ -5,6 +5,7 @@ CAS Server change log
 
 ## 0.8.0 / 2022-06-11
 
+* Merged PR #13: Add default favicon - @thekid
 * Upgrade sessions library, using newer APIs to control session cookies
   (@thekid)
 
