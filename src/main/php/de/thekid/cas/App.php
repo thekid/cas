@@ -16,7 +16,6 @@ class App extends Application {
 
   /** @return var */
   public function routes() {
-    $files= new FilesFrom($this->environment->path('src/main/webapp'));
     $credentials= new Credentials(new FromEnvironment(), new FromFile($this->environment->path('credentials')));
     $inject= new Injector(
       new ConfiguredBindings($credentials->expanding($this->environment->properties('inject'))),
@@ -26,8 +25,7 @@ class App extends Application {
     ); 
 
     return [
-      '/favicon.ico'     => $files,
-      '/static'          => $files,
+      '/static'          => new FilesFrom($this->environment->path('src/main/webapp')),
       '/serviceValidate' => $inject->get(Validate::class),
       '/login'           => $inject->get(Login::class),
       '/logout'          => $inject->get(Logout::class),
