@@ -1,6 +1,6 @@
 <?php namespace de\thekid\cas\users;
 
-use rdbms\DBConnection;
+use rdbms\{DBConnection, DriverManager};
 use text\hash\{Hashing, HashCode};
 use util\Secret;
 
@@ -21,10 +21,11 @@ use util\Secret;
  * secret    varchar
  */
 class UserDatabase implements Users {
-  private $hash;
+  private $conn, $hash;
 
   /** Creates a new database-driven datasource */
-  public function __construct(private DBConnection $conn) {
+  public function __construct(string|DBConnection $conn) {
+    $this->conn= $conn instanceof DBConnection ? $conn : DriverManager::getConnection($conn);
     $this->hash= Hashing::sha256();
   }
 

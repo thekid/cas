@@ -1,6 +1,6 @@
 <?php namespace de\thekid\cas\tickets;
 
-use rdbms\DBConnection;
+use rdbms\{DBConnection, DriverManager};
 use util\{Date, DateUtil};
 
 /**
@@ -13,9 +13,12 @@ use util\{Date, DateUtil};
  * created   datetime
  */
 class TicketDatabase implements Tickets {
+  private $conn;
 
   /** Creates a new database-driven tickets data source */
-  public function __construct(private DBConnection $conn, private int $timeout= 10) { }
+  public function __construct(string|DBConnection $conn, private int $timeout= 10) {
+    $this->conn= $conn instanceof DBConnection ? $conn : DriverManager::getConnection($conn);
+  }
 
   /** @return string */
   public fn prefix() => 'ST-';
