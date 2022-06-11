@@ -2,7 +2,7 @@
 
 use inject\Bindings;
 use lang\Environment;
-use web\session\{Sessions, Cookies, InFileSystem};
+use web\session\{Sessions, InFileSystem};
 
 /** Sessioning and templates */
 class Frontend extends Bindings {
@@ -11,8 +11,12 @@ class Frontend extends Bindings {
 
   /** @param inject.Injector */
   public function configure($inject) {
-    $cookies= new Cookies()->insecure($this->dev);
-    $inject->bind(Sessions::class, new InFileSystem(Environment::tempDir())->named('auth')->via($cookies));
+
+    // Allow session cookies to be sent via `http` during development
+    $sessions= new InFileSystem(Environment::tempDir())->named('auth');
+    $sessions->cookies()->insecure($this->dev);
+
+    $inject->bind(Sessions::class, $sessions);
     $inject->bind(Templating::class, new TemplateEngine($this->templates));
   }
 }

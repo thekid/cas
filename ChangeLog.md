@@ -3,6 +3,11 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.8.0 / 2022-06-11
+
+* Upgrade sessions library, using newer APIs to control session cookies
+  (@thekid)
+
 ## 0.7.0 / 2022-01-30
 
 * Upgrade dependencies to newest version - @thekid
