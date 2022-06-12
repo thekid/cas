@@ -37,9 +37,9 @@ class UserDatabase extends Users {
   /** Returns all users */
   public function all(?string $filter= null): iterable {
     if (null === $filter) {
-      $it= $this->conn->open('select * from user left join token on user.user_id = token.user_id');
+      $q= $this->conn->open('select * from user left join token on user.user_id = token.user_id');
     } else {
-      $it= $this->conn->open(
+      $q= $this->conn->open(
         'select * from user left join token on user.user_id = token.user_id where username like %s',
         strtr($filter, '*', '%')
       );
@@ -47,7 +47,7 @@ class UserDatabase extends Users {
 
     // Separate cross productmath into user and tokens
     $user= null;
-    foreach ($it as $record) {
+    while ($record= $q->next()) {
       if ($record['username'] !== $user['username']) {
         $user && yield new User($user['username'], $user['tokens']);
         $user= $record + ['tokens' => []];
