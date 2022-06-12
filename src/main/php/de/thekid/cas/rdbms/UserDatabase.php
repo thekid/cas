@@ -1,5 +1,6 @@
-<?php namespace de\thekid\cas\users;
+<?php namespace de\thekid\cas\rdbms;
 
+use de\thekid\cas\users\{User, Users, NoSuchUser, PasswordMismatch, Authentication, Authenticated};
 use rdbms\{DBConnection, DriverManager};
 use text\hash\{Hashing, HashCode};
 use util\Secret;

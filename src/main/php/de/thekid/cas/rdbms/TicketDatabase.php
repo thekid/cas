@@ -1,5 +1,6 @@
-<?php namespace de\thekid\cas\tickets;
+<?php namespace de\thekid\cas\rdbms;
 
+use de\thekid\cas\tickets\Tickets;
 use rdbms\{DBConnection, DriverManager};
 use util\{Date, DateUtil};
 
