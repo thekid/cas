@@ -57,10 +57,24 @@ class UserDatabase implements Users {
   /** Returns all users */
   public function all(?string $filter= null): iterable {
     if (null === $filter) {
-      yield from $this->conn->open('select * from user');
+      $it= $this->conn->open('select * from user left join token on user.user_id = token.user_id');
     } else {
-      yield from $this->conn->open('select * from user where username like %s', strtr($filter, '*', '%'));
+      $it= $this->conn->open(
+        'select * from user left join token on user.user_id = token.user_id where username like %s',
+        strtr($filter, '*', '%')
+      );
     }
+
+    // Separate cross productmath into user and tokens
+    $user= null;
+    foreach ($it as $record) {
+      if ($record['username'] !== $user['username']) {
+        $user && yield new User($user['username'], $user['tokens']);
+        $user= $record + ['tokens' => []];
+      }
+      $record['token_id'] && $user['tokens'][$record['name']]= $record['secret'];
+    }
+    $user && yield new User($user['username'], $user['tokens']);
   }
 
   /** Returns a user by a given username */
