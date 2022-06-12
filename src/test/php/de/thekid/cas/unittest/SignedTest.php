@@ -17,16 +17,16 @@ class SignedTest {
     new Signed(new Secret(self::SECRET));
   }
 
-  #[Test, Values([0, 1, 6100])]
+  #[Test, Values([0, 1, 6100, '62a6179f4c9ac9ab5cb437e3'])]
   public function roundtrip($value) {
     $fixture= new Signed(self::SECRET);
-    Assert::equals($value, $fixture->verify($fixture->id($value)));
+    Assert::equals((string)$value, $fixture->verify($fixture->id($value)));
   }
 
-  #[Test, Values([0, 1, 6100])]
+  #[Test, Values([0, 1, 6100, '62a6179f4c9ac9ab5cb437e3'])]
   public function roundtrip_with_prefix($value) {
     $fixture= new Signed(self::SECRET);
-    Assert::equals($value, $fixture->verify($fixture->id($value, 'ST-'), 'ST-'));
+    Assert::equals((string)$value, $fixture->verify($fixture->id($value, 'ST-'), 'ST-'));
   }
 
   #[Test, Values(['0-', '1-ABC', '6100-3c3b7591af75211812281d52-missing'])]

@@ -28,7 +28,7 @@ class TicketDatabase implements Tickets {
    * Creates a new ticket
    *
    * @param  var $value
-   * @return int
+   * @return int|string
    */
   public function create($value) {
     $this->conn->insert('into ticket (value, created) values (%s, %s)', json_encode($value), Date::now());
@@ -38,7 +38,7 @@ class TicketDatabase implements Tickets {
   /**
    * Looks up and verifies a ticket by a given ID.
    *
-   * @param   int $id
+   * @param   int|string $id
    * @return  var or NULL to indicate the ticket could not be verified.
    */
   public function validate($id) {
