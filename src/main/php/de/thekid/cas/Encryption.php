@@ -32,10 +32,10 @@ class Encryption {
         return $r;
       };
     } else if (extension_loaded('openssl')) {
-      self::$nlength= self::$klength= openssl_cipher_iv_length('DES');
-      self::$encrypt= fn($value, $nonce, $key) => openssl_encrypt($value, 'DES', $key->reveal(), 0, $nonce);
+      self::$nlength= self::$klength= openssl_cipher_iv_length('AES-128-CBC');
+      self::$encrypt= fn($value, $nonce, $key) => openssl_encrypt($value, 'AES-128-CBC', $key->reveal(), 0, $nonce);
       self::$decrypt= fn($cipher, $nonce, $key) => {
-        if (false === ($r= openssl_decrypt($cipher, 'DES', $key->reveal(), 0, $nonce))) {
+        if (false === ($r= openssl_decrypt($cipher, 'AES-128-CBC', $key->reveal(), 0, $nonce))) {
           $errors= [];
           while ($error= openssl_error_string()) {
             $errors[]= $error;
