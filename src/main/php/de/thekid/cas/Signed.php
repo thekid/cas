@@ -17,12 +17,12 @@ class Signed {
 
   /** Signs an ID */
   public function id(int|string $id, string $prefix= ''): string {
-    return $prefix.$id.'-'.md5($id.$this->secret->reveal());
+    return $prefix.md5($id.$this->secret->reveal()).'-'.$id;
   }
 
   /** Verifies a signed string, returning the underlying ID */
   public function verify(?string $signed, string $prefix= ''): ?string {
-    if (null !== $signed && 2 === sscanf($signed, $prefix.'%[^-]-%s', $id, $hash)) {
+    if (null !== $signed && 2 === sscanf($signed, $prefix.'%[0-9a-f]-%s', $hash, $id)) {
       if ($hash === md5($id.$this->secret->reveal())) return $id;
     }
     return null;
