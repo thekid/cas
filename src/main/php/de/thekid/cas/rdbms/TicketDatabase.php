@@ -2,7 +2,7 @@
 
 use de\thekid\cas\tickets\Tickets;
 use rdbms\{DBConnection, DriverManager};
-use util\{Date, DateUtil};
+use util\{Date, Dates};
 
 /**
  * Minimalistic ticket database implementation
@@ -48,7 +48,7 @@ class TicketDatabase implements Tickets {
     if (null === $ticket) return null;
 
     // Clean up tickets older than maximum timeout
-    $timeout= DateUtil::addSeconds(Date::now(), -$this->timeout);
+    $timeout= Dates::add(Date::now(), -$this->timeout);
     $this->conn->delete('from ticket where created < %s', $timeout);
 
     // Verify timeout has not been reached
