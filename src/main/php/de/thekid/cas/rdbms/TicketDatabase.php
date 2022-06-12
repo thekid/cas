@@ -14,12 +14,9 @@ use util\{Date, Dates};
  * created   datetime
  */
 class TicketDatabase extends Tickets {
-  private $conn;
 
   /** Creates a new database-driven tickets data source */
-  public function __construct(string|DBConnection $conn, private int $timeout= 10) {
-    $this->conn= $conn instanceof DBConnection ? $conn : DriverManager::getConnection($conn);
-  }
+  public function __construct(private DBConnection $conn, private int $timeout= 10) { }
 
   /**
    * Creates a new ticket

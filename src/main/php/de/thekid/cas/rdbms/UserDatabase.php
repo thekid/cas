@@ -21,12 +21,9 @@ use util\Secret;
  * secret    varchar
  */
 class UserDatabase extends Users {
-  private $conn;
 
   /** Creates a new database-driven datasource */
-  public function __construct(string|DBConnection $conn) {
-    $this->conn= $conn instanceof DBConnection ? $conn : DriverManager::getConnection($conn);
-  }
+  public function __construct(private DBConnection $conn) { }
 
   /** Fetches tokens */
   private function tokens($id): array<string, string> {
