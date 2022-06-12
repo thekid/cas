@@ -13,16 +13,13 @@ use util\{Date, Dates};
  * value     tinytext
  * created   datetime
  */
-class TicketDatabase implements Tickets {
+class TicketDatabase extends Tickets {
   private $conn;
 
   /** Creates a new database-driven tickets data source */
   public function __construct(string|DBConnection $conn, private int $timeout= 10) {
     $this->conn= $conn instanceof DBConnection ? $conn : DriverManager::getConnection($conn);
   }
-
-  /** @return string */
-  public fn prefix() => 'ST-';
 
   /**
    * Creates a new ticket

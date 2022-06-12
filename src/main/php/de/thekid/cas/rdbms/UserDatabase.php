@@ -21,7 +21,7 @@ use util\Secret;
  * name      varchar
  * secret    varchar
  */
-class UserDatabase implements Users {
+class UserDatabase extends Users {
   private $conn, $hash;
 
   /** Creates a new database-driven datasource */

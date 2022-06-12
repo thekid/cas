@@ -2,24 +2,24 @@
 
 use util\Secret;
 
-interface Users {
+abstract class Users {
 
   /** Authenticates a user, returning success or failure in a result object */
-  public function authenticate(string $username, Secret $password): Authentication;
+  public abstract function authenticate(string $username, Secret $password): Authentication;
 
   /** Returns all users */
-  public function all(?string $filter= null): iterable;
+  public abstract function all(?string $filter= null): iterable;
 
   /** Returns a user by a given username */
-  public function named(string $username): ?User;
+  public abstract function named(string $username): ?User;
 
   /** Creates a new user with a given username and password. */
-  public function create(string $username, string|Secret $password): User;
+  public abstract function create(string $username, string|Secret $password): User;
 
   /** Removes an existing user */
-  public function remove(string|User $user): void;
+  public abstract function remove(string|User $user): void;
 
   /** Changes a user's password. */
-  public function password(string|User $user, string|Secret $password): void;
+  public abstract function password(string|User $user, string|Secret $password): void;
 
 }
