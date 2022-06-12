@@ -2,7 +2,6 @@
 
 use de\thekid\cas\users\{User, Users};
 use rdbms\{DBConnection, DriverManager};
-use text\hash\{Hashing, HashCode};
 use util\Secret;
 
 /**
@@ -22,12 +21,11 @@ use util\Secret;
  * secret    varchar
  */
 class UserDatabase extends Users {
-  private $conn, $hash;
+  private $conn;
 
   /** Creates a new database-driven datasource */
   public function __construct(string|DBConnection $conn) {
     $this->conn= $conn instanceof DBConnection ? $conn : DriverManager::getConnection($conn);
-    $this->hash= Hashing::sha256();
   }
 
   /** Fetches tokens */
