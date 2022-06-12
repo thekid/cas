@@ -49,7 +49,7 @@ class UserDatabase extends Users {
     $user= null;
     while ($record= $q->next()) {
       if ($record['username'] !== $user['username']) {
-        $user && yield new User($user['username'], $user['tokens']);
+        $user && yield new User($user['username'], $user['hash'], $user['tokens']);
         $user= $record + ['tokens' => []];
       }
       $record['token_id'] && $user['tokens'][$record['name']]= $record['secret'];
