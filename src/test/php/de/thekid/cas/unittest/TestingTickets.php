@@ -3,10 +3,8 @@
 use de\thekid\cas\tickets\Tickets;
 use unittest\Assert;
 
-class TestingTickets implements Tickets {
+class TestingTickets extends Tickets {
   private $backing= [];
-
-  public fn prefix() => 'ST-';
 
   public function create($value) {
     $this->backing[]= $value;

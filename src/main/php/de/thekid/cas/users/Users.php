@@ -1,11 +1,10 @@
 <?php namespace de\thekid\cas\users;
 
+use text\hash\{Hashing, HashCode};
 use util\Secret;
 
 abstract class Users {
-
-  /** Authenticates a user, returning success or failure in a result object */
-  public abstract function authenticate(string $username, Secret $password): Authentication;
+  private static $hash= Hashing::sha256();
 
   /** Returns all users */
   public abstract function all(?string $filter= null): iterable;
@@ -22,4 +21,23 @@ abstract class Users {
   /** Changes a user's password. */
   public abstract function password(string|User $user, string|Secret $password): void;
 
+  /** Creates a hash for a given secret */
+  public function hash(string|Secret $secret): string {
+    return self::$hash->digest($password instanceof Secret ? $password->reveal() : $password)->hex();
+  }
+
+  /** Authenticates a user, returning success or failure in a result object */
+  public function authenticate(string $username, Secret $password): Authentication {
+    $user= $this->named($username);
+    if (null === $user) {
+      return new NoSuchUser($username);
+    }
+
+    $computed= self::$hash->digest($password->reveal());
+    if (!$computed->equals(HashCode::fromHex($user->hash()))) {
+      return new PasswordMismatch($username);
+    }
+
+    return new Authenticated($user);
+  }
 }

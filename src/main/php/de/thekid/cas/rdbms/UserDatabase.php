@@ -1,6 +1,6 @@
 <?php namespace de\thekid\cas\rdbms;
 
-use de\thekid\cas\users\{User, Users, NoSuchUser, PasswordMismatch, Authentication, Authenticated};
+use de\thekid\cas\users\{User, Users};
 use rdbms\{DBConnection, DriverManager};
 use text\hash\{Hashing, HashCode};
 use util\Secret;
@@ -39,21 +39,6 @@ class UserDatabase extends Users {
     return $tokens;    
   }
 
-  /** Authenticates a user, returning success or failure in a result object */
-  public function authenticate(string $username, Secret $password): Authentication {
-    $user= $this->conn->query('select * from user where username = %s', $username)->next();
-    if (null === $user) {
-      return new NoSuchUser($username);
-    }
-
-    $computed= $this->hash->digest($password->reveal());
-    if (!$computed->equals(HashCode::fromHex($user['hash']))) {
-      return new PasswordMismatch($username);
-    }
-
-    return new Authenticated(new User($user['username'], $this->tokens($user['user_id'])));
-  }
-
   /** Returns all users */
   public function all(?string $filter= null): iterable {
     if (null === $filter) {
@@ -74,7 +59,7 @@ class UserDatabase extends Users {
       }
       $record['token_id'] && $user['tokens'][$record['name']]= $record['secret'];
     }
-    $user && yield new User($user['username'], $user['tokens']);
+    $user && yield new User($user['username'], $user['hash'], $user['tokens']);
   }
 
   /** Returns a user by a given username */
@@ -82,18 +67,15 @@ class UserDatabase extends Users {
     $user= $this->conn->query('select * from user where username = %s', $username)->next();
     if (null === $user) return null;
 
-    return new User($user['username'], $this->tokens($user['user_id']));
+    return new User($user['username'], $user['hash'], $this->tokens($user['user_id']));
   }
 
   /** Creates a new user with a given username and password. */
   public function create(string $username, string|Secret $password): User {
-    $this->conn->insert(
-      'into user (username, hash) values (%s, %s)',
-      $username,
-      $this->hash->digest($password instanceof Secret ? $password->reveal() : $password),
-    );
-    $id= $this->conn->identity();
-    return new User($username, $this->tokens($id));
+    $hash= $this->hash($password);
+    $this->conn->insert('into user (username, hash) values (%s, %s)', $username, $hash);
+
+    return new User($username, $hash, []);
   }
 
   /** Removes an existing user */
@@ -108,7 +90,7 @@ class UserDatabase extends Users {
   public function password(string|User $user, string|Secret $password): void {
     $this->conn->update(
       'user set hash = %s where username = %s',
-      $this->hash->digest($password instanceof Secret ? $password->reveal() : $password),
+      $this->hash($password),
       $user instanceof User ? $user->username() : $user,
     );
   }
