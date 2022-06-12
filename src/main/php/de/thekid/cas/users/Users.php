@@ -23,7 +23,7 @@ abstract class Users {
 
   /** Creates a hash for a given secret */
   public function hash(string|Secret $secret): string {
-    return self::$hash->digest($password instanceof Secret ? $password->reveal() : $password)->hex();
+    return self::$hash->digest($secret instanceof Secret ? $secret->reveal() : $secret)->hex();
   }
 
   /** Authenticates a user, returning success or failure in a result object */
