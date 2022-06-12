@@ -3,6 +3,12 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.8.1 / 2022-06-12
+
+* Merged PR #15: Use AES instead of DES, the latter algorithm is now
+  considered legacy. Fixes PHP 8.2
+  (@thekid)
+
 ## 0.8.0 / 2022-06-11
 
 * Merged PR #13: Add default favicon - @thekid

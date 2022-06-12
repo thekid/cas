@@ -18,12 +18,34 @@ class Encryption {
       self::$nlength= SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
       self::$klength= SODIUM_CRYPTO_SECRETBOX_KEYBYTES;
       self::$encrypt= fn($value, $nonce, $key) => sodium_crypto_secretbox($value, $nonce, $key->reveal());
-      self::$decrypt= fn($cipher, $nonce, $key) => sodium_crypto_secretbox_open($cipher, $nonce, $key->reveal());
+      self::$decrypt= fn($cipher, $nonce, $key) => {
+        try {
+          $r= sodium_crypto_secretbox_open($cipher, $nonce, $key->reveal());
+        } catch ($e) {
+          throw new FormatException('Errors: ['.$e->getMessage().']', $e);
+        }
+        if (false === ($r= sodium_crypto_secretbox_open($cipher, $nonce, $key->reveal()))) {
+          $e= new FormatException('Decryption failed');
+          \xp::gc(__FILE__);
+          throw $e;
+        }
+        return $r;
+      };
     } else if (extension_loaded('openssl')) {
-      self::$klength= openssl_cipher_iv_length('DES');
-      self::$nlength= openssl_cipher_iv_length('DES');
-      self::$encrypt= fn($value, $nonce, $key) => openssl_encrypt($value, 'DES', $key->reveal(), 0, $nonce);
-      self::$decrypt= fn($cipher, $nonce, $key) => openssl_decrypt($cipher, 'DES', $key->reveal(), 0, $nonce);
+      self::$nlength= self::$klength= openssl_cipher_iv_length('AES-128-CBC');
+      self::$encrypt= fn($value, $nonce, $key) => openssl_encrypt($value, 'AES-128-CBC', $key->reveal(), 0, $nonce);
+      self::$decrypt= fn($cipher, $nonce, $key) => {
+        if (false === ($r= openssl_decrypt($cipher, 'AES-128-CBC', $key->reveal(), 0, $nonce))) {
+          $errors= [];
+          while ($error= openssl_error_string()) {
+            $errors[]= $error;
+          }
+          $e= new FormatException('Errors: ['.implode(', ', $errors).']');
+          \xp::gc(__FILE__);
+          throw $e;
+        }
+        return $r;
+      };
     } else {
       throw new IllegalAccessException('Expected either sodium or openssl extension to be loaded');
     }
@@ -65,18 +87,6 @@ class Encryption {
     $nonce= substr($bytes, 0, self::$nlength);
     $cipher= substr($bytes, self::$nlength);
 
-    try {
-      $r= (self::$decrypt)($cipher, $nonce, $this->key);
-    } catch ($e) {
-      throw new FormatException('Internal decryption error', $e);
-    }
-
-    if (false === $r) {
-      $e= new FormatException('Cannot decrypt given value');
-      \xp::gc(__FILE__);
-      throw $e;
-    }
-
-    return $r;
+    return (self::$decrypt)($cipher, $nonce, $this->key);
   }
 }
