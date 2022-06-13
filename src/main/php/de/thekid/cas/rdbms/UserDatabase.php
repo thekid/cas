@@ -1,7 +1,7 @@
-<?php namespace de\thekid\cas\users;
+<?php namespace de\thekid\cas\rdbms;
 
+use de\thekid\cas\users\{User, Users};
 use rdbms\{DBConnection, DriverManager};
-use text\hash\{Hashing, HashCode};
 use util\Secret;
 
 /**
@@ -20,14 +20,10 @@ use util\Secret;
  * name      varchar
  * secret    varchar
  */
-class UserDatabase implements Users {
-  private $conn, $hash;
+class UserDatabase extends Users {
 
   /** Creates a new database-driven datasource */
-  public function __construct(string|DBConnection $conn) {
-    $this->conn= $conn instanceof DBConnection ? $conn : DriverManager::getConnection($conn);
-    $this->hash= Hashing::sha256();
-  }
+  public function __construct(private DBConnection $conn) { }
 
   /** Fetches tokens */
   private function tokens($id): array<string, string> {
@@ -38,28 +34,27 @@ class UserDatabase implements Users {
     return $tokens;    
   }
 
-  /** Authenticates a user, returning success or failure in a result object */
-  public function authenticate(string $username, Secret $password): Authentication {
-    $user= $this->conn->query('select * from user where username = %s', $username)->next();
-    if (null === $user) {
-      return new NoSuchUser($username);
-    }
-
-    $computed= $this->hash->digest($password->reveal());
-    if (!$computed->equals(HashCode::fromHex($user['hash']))) {
-      return new PasswordMismatch($username);
-    }
-
-    return new Authenticated(new User($user['username'], $this->tokens($user['user_id'])));
-  }
-
   /** Returns all users */
   public function all(?string $filter= null): iterable {
     if (null === $filter) {
-      yield from $this->conn->open('select * from user');
+      $q= $this->conn->open('select * from user left join token on user.user_id = token.user_id');
     } else {
-      yield from $this->conn->open('select * from user where username like %s', strtr($filter, '*', '%'));
+      $q= $this->conn->open(
+        'select * from user left join token on user.user_id = token.user_id where username like %s',
+        strtr($filter, '*', '%')
+      );
     }
+
+    // Separate cross productmath into user and tokens
+    $user= null;
+    while ($record= $q->next()) {
+      if ($record['username'] !== $user['username']) {
+        $user && yield new User($user['username'], $user['hash'], $user['tokens']);
+        $user= $record + ['tokens' => []];
+      }
+      $record['token_id'] && $user['tokens'][$record['name']]= $record['secret'];
+    }
+    $user && yield new User($user['username'], $user['hash'], $user['tokens']);
   }
 
   /** Returns a user by a given username */
@@ -67,18 +62,15 @@ class UserDatabase implements Users {
     $user= $this->conn->query('select * from user where username = %s', $username)->next();
     if (null === $user) return null;
 
-    return new User($user['username'], $this->tokens($user['user_id']));
+    return new User($user['username'], $user['hash'], $this->tokens($user['user_id']));
   }
 
   /** Creates a new user with a given username and password. */
   public function create(string $username, string|Secret $password): User {
-    $this->conn->insert(
-      'into user (username, hash) values (%s, %s)',
-      $username,
-      $this->hash->digest($password instanceof Secret ? $password->reveal() : $password),
-    );
-    $id= $this->conn->identity();
-    return new User($username, $this->tokens($id));
+    $hash= $this->hash($password);
+    $this->conn->insert('into user (username, hash) values (%s, %s)', $username, $hash);
+
+    return new User($username, $hash, []);
   }
 
   /** Removes an existing user */
@@ -93,7 +85,7 @@ class UserDatabase implements Users {
   public function password(string|User $user, string|Secret $password): void {
     $this->conn->update(
       'user set hash = %s where username = %s',
-      $this->hash->digest($password instanceof Secret ? $password->reveal() : $password),
+      $this->hash($password),
       $user instanceof User ? $user->username() : $user,
     );
   }

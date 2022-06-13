@@ -1,7 +1,8 @@
-<?php namespace de\thekid\cas\tickets;
+<?php namespace de\thekid\cas\rdbms;
 
+use de\thekid\cas\tickets\Tickets;
 use rdbms\{DBConnection, DriverManager};
-use util\{Date, DateUtil};
+use util\{Date, Dates};
 
 /**
  * Minimalistic ticket database implementation
@@ -12,22 +13,16 @@ use util\{Date, DateUtil};
  * value     tinytext
  * created   datetime
  */
-class TicketDatabase implements Tickets {
-  private $conn;
+class TicketDatabase extends Tickets {
 
   /** Creates a new database-driven tickets data source */
-  public function __construct(string|DBConnection $conn, private int $timeout= 10) {
-    $this->conn= $conn instanceof DBConnection ? $conn : DriverManager::getConnection($conn);
-  }
-
-  /** @return string */
-  public fn prefix() => 'ST-';
+  public function __construct(private DBConnection $conn, private int $timeout= 10) { }
 
   /**
    * Creates a new ticket
    *
    * @param  var $value
-   * @return int
+   * @return int|string
    */
   public function create($value) {
     $this->conn->insert('into ticket (value, created) values (%s, %s)', json_encode($value), Date::now());
@@ -37,7 +32,7 @@ class TicketDatabase implements Tickets {
   /**
    * Looks up and verifies a ticket by a given ID.
    *
-   * @param   int $id
+   * @param   int|string $id
    * @return  var or NULL to indicate the ticket could not be verified.
    */
   public function validate($id) {
@@ -47,7 +42,7 @@ class TicketDatabase implements Tickets {
     if (null === $ticket) return null;
 
     // Clean up tickets older than maximum timeout
-    $timeout= DateUtil::addSeconds(Date::now(), -$this->timeout);
+    $timeout= Dates::add(Date::now(), -$this->timeout);
     $this->conn->delete('from ticket where created < %s', $timeout);
 
     // Verify timeout has not been reached

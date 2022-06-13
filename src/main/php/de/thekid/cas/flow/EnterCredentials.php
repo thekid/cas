@@ -38,6 +38,7 @@ class EnterCredentials implements Step {
 
       $error= ['failed' => $result];
     } catch (Throwable $t) {
+      $t->printStackTrace();
       $error= ['exception' => $t];
     }
 

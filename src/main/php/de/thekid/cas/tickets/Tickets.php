@@ -1,23 +1,23 @@
 <?php namespace de\thekid\cas\tickets;
 
-interface Tickets {
+abstract class Tickets {
 
   /** @return string */
-  public function prefix();
+  public fn prefix() => 'ST-';
 
   /**
    * Creates a new ticket
    *
    * @param  var $value
-   * @return int
+   * @return int|string
    */
-  public function create($user);
+  public abstract function create($user);
 
   /**
    * Looks up and verifies a ticket by a given ID.
    *
-   * @param   int $id
+   * @param   int|string $id
    * @return  var or NULL to indicate the ticket could not be verified.
    */
-  public function validate($id);
+  public abstract function validate($id);
 }
