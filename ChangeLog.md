@@ -3,6 +3,10 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #14: Refactor persistence. This opens up possibilities to
+  easily create own implementations, e.g. one based on MongoDB.
+  (@thekid)
+
 ## 0.8.1 / 2022-06-12
 
 * Merged PR #15: Use AES instead of DES, the latter algorithm is now
