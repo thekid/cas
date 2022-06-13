@@ -70,7 +70,7 @@ Running
 Start the server:
 
 ```sh
-$ xp serve -c src/main/etc/local
+$ xp serve -c src/main/etc/sql
 ```
 
 *Now open http://localhost:8080/login in your browser.*
@@ -80,19 +80,19 @@ User management
 
 ```sh
 # Create a new user; generating a random password if necessary
-$ xp cmd -c src/main/etc/local NewUser <user> [--password=<password>]
+$ xp cmd -c src/main/etc/sql NewUser <user> [--password=<password>]
 
 # Change a user's password
-$ xp cmd -c src/main/etc/local ChangePassword <user> [--password=<password>]
+$ xp cmd -c src/main/etc/sql ChangePassword <user> [--password=<password>]
 
 # Remove an existing user
-$ xp cmd -c src/main/etc/local RemoveUser <user>
+$ xp cmd -c src/main/etc/sql RemoveUser <user>
 
 # List all users
-$ xp cmd -c src/main/etc/local ListUsers
+$ xp cmd -c src/main/etc/sql ListUsers
 
 # Filter users on their username. Use * to match any character
-$ xp cmd -c src/main/etc/local ListUsers 't*'
+$ xp cmd -c src/main/etc/sql ListUsers 't*'
 ```
 
 Setting up MFA
@@ -100,12 +100,12 @@ Setting up MFA
 
 ```sh
 # Create a new token
-$ xp cmd -c src/main/etc/local NewToken <user> [--name=<name>]
+$ xp cmd -c src/main/etc/sql NewToken <user> [--name=<name>]
 
 # List existing tokens
-$ xp cmd -c src/main/etc/local ListTokens <user>
+$ xp cmd -c src/main/etc/sql ListTokens <user>
 
 # Remove an existing token
-$ xp cmd -c src/main/etc/local RemoveToken <user> <name>
+$ xp cmd -c src/main/etc/sql RemoveToken <user> <name>
 ```
 
