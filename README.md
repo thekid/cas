@@ -46,6 +46,7 @@ Export environment:
 
 ```sh
 $ export CAS_DB_PASS=... # The one you used when creating the database user above
+$ export REDIS_PASS=...  # Sessions use filesystem during development, redis only in prod
 $ export CRYPTO_KEY=...  # Must have 32 characters, generate with `openssl rand -base64 24`
 ```
 
@@ -55,6 +56,7 @@ You can also put these variables into a file named **credentials**, if you wish:
 $ cat > credentials
 CAS_DB_PASS=...
 CRYPTO_KEY=...
+REDIS_PASS=...
 ```
 
 Running
