@@ -8,13 +8,13 @@ CAS Server
 [![Supports PHP 8.0+](https://raw.githubusercontent.com/xp-framework/web/master/static/php-8_0plus.svg)](http://php.net/)
 ![Less than 1000 lines](https://raw.githubusercontent.com/xp-framework/web/master/static/less-than-1000LOC.png)
 
-Minimalistic [CAS](https://apereo.github.io/cas/) Server in PHP
+Minimalistic [CAS](https://apereo.github.io/cas/) Server in PHP supporting MySQL / MariaDB or MongoDB persistence.
 
 ![image](https://user-images.githubusercontent.com/696742/96371316-6a6d9b00-1161-11eb-8662-0d96e23610f7.png)
 
 Setup
 -----
-Create a database (*the following uses MySQL syntax, adopt if necessary!*):
+For use with MySQL / MariaDB, create a database with the following tables (*the following uses MySQL syntax, adopt if necessary!*):
 
 ```sql
 create database IDENTITIES
@@ -42,6 +42,17 @@ create table ticket (
 grant all on IDENTITIES.* to 'cas'@'%' identified by '...'
 ```
 
+MongoDB collections are created automatically when the first document is inserted - so the only thing necessary is to create the user for the respective database, as shown in the following Mongo CLI commands:
+
+```javascript
+mongo> use admin;
+mongo> db.createUser({
+  user: "cas",
+  pwd: "...",
+  roles: [ { role: "readWrite", db: "cas" } ]
+})
+```
+
 Run composer:
 
 ```sh
@@ -53,11 +64,10 @@ Export environment:
 
 ```sh
 $ export CAS_DB_PASS=... # The one you used when creating the database user above
-$ export CRYPTO_KEY=...  # Must have 32 characters
+$ export CRYPTO_KEY=...  # Must have 32 characters, generate with `openssl rand -base64 24`
 ```
 
 You can also put these variables into a file named **credentials**, if you wish:
-
 
 ```sh
 $ cat > credentials
@@ -70,10 +80,16 @@ Running
 Start the server:
 
 ```sh
+# For MySQL / MariaDB
 $ xp serve -c src/main/etc/sql
+
+# For MongoDB
+$ xp serve -c src/main/etc/mongo
 ```
 
 *Now open http://localhost:8080/login in your browser.*
+
+All of the following use the *sql* configuration. For use with MongoDB, use `src/main/etc/mongo` instead!
 
 User management
 ---------------
