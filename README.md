@@ -63,10 +63,10 @@ Start the server:
 
 ```sh
 # For MySQL / MariaDB
-$ xp serve -c src/main/etc/sql
+$ xp serve -p dev -c src/main/etc/sql
 
 # For MongoDB
-$ xp serve -c src/main/etc/mongo
+$ xp serve -p dev -c src/main/etc/mongo
 ```
 
 *Now open http://localhost:8080/login in your browser.*
