@@ -3,6 +3,8 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* Fixed `RemoveToken` admin command - @thekid
+
 ## 0.9.2 / 2022-06-17
 
 * Simplified code in command line admin tooling - @thekid 

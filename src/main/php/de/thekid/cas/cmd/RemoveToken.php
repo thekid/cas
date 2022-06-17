@@ -9,6 +9,7 @@ class RemoveToken extends Administration {
   public function setName(private string $name) { }
  
   public function run(): int {
+    $tokens= $this->user->tokens();
     if (!isset($tokens[$this->name])) {
       $this->err->writeLine('No token named "'.$this->name.'" for ', $this->user);
       return 1;
