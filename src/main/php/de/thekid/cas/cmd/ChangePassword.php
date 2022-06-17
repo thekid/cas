@@ -1,19 +1,12 @@
 <?php namespace de\thekid\cas\cmd;
 
-use de\thekid\cas\users\Users;
-use lang\IllegalArgumentException;
 use util\cmd\Arg;
 use util\{Secret, Random};
 
 class ChangePassword extends Administration {
-  private $user, $password;
+  use UserBased;
 
-  public function __construct(private Users $users) { }
-
-  #[Arg(position: 0)]
-  public function setUser(string $user) {
-    $this->user= $this->users->named($user) ?? throw new IllegalArgumentException('No such user '.$user);
-  }
+  private $password;
 
   #[Arg]
   public function setPassword(?string $password= null) {
@@ -25,7 +18,7 @@ class ChangePassword extends Administration {
   }
  
   public function run(): int {
-    $this->users->password($this->user, $this->password);
+    $this->persistence->users()->password($this->user, $this->password);
     $this->out->writeLine('Password updated');
     return 0;
   }

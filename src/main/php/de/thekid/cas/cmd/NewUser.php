@@ -1,6 +1,5 @@
 <?php namespace de\thekid\cas\cmd;
 
-use de\thekid\cas\users\Users;
 use lang\IllegalArgumentException;
 use util\cmd\Arg;
 use util\{Secret, Random};
@@ -8,11 +7,9 @@ use util\{Secret, Random};
 class NewUser extends Administration {
   private $user, $password;
 
-  public function __construct(private Users $users) { }
-
   #[Arg(position: 0)]
   public function setUser(string $user) {
-    if (null !== $this->users->named($user)) {
+    if (null !== $this->persistence->users()->named($user)) {
       throw new IllegalArgumentException('User '.$user.' already exists');
     }
     $this->user= $user;
@@ -28,7 +25,7 @@ class NewUser extends Administration {
   }
  
   public function run(): int {
-    $this->users->create($this->user, $this->password);
+    $this->persistence->users()->create($this->user, $this->password);
     $this->out->writeLine('User created');
     return 0;
   }

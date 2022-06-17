@@ -1,30 +1,20 @@
 <?php namespace de\thekid\cas\cmd;
 
-use de\thekid\cas\users\Users;
-use lang\IllegalArgumentException;
 use util\cmd\Arg;
 
 class RemoveToken extends Administration {
-  private $user, $name;
-
-  public function __construct(private Users $users) { }
-
-  #[Arg(position: 0)]
-  public function setUser(string $user) {
-    $this->user= $this->users->named($user) ?? throw new IllegalArgumentException('No such user '.$user);
-  }
+  use UserBased;
 
   #[Arg(position: 1)]
-  public function setName(string $name) {
-    $tokens= $this->user->tokens();
-    if (!isset($tokens[$name])) {
-      throw new IllegalArgumentException('No token named "'.$name.'"');
-    }
-    $this->name= $name;
-  }
+  public function setName(private string $name) { }
  
   public function run(): int {
-    $this->users->removeToken($this->user, $this->name);
+    if (!isset($tokens[$this->name])) {
+      $this->err->writeLine('No token named "'.$this->name.'" for ', $this->user);
+      return 1;
+    }
+
+    $this->persistence->users()->removeToken($this->user, $this->name);
     $this->out->writeLine('Token removed');
     return 0;
   }

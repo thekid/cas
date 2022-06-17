@@ -1,31 +1,21 @@
 <?php namespace de\thekid\cas\cmd;
 
 use com\google\authenticator\Secrets;
-use de\thekid\cas\Encryption;
-use de\thekid\cas\users\Users;
-use lang\IllegalArgumentException;
 use util\cmd\Arg;
 
 class NewToken extends Administration {
-  private $user, $name;
-
-  public function __construct(private Users $users, private Encryption $encryption) { }
-
-  #[Arg(position: 0)]
-  public function setUser(string $user) {
-    $this->user= $this->users->named($user) ?? throw new IllegalArgumentException('No such user '.$user);
-  }
+  use UserBased;
 
   #[Arg]
-  public function setName(?string $name= 'CAS') {
-    $tokens= $this->user->tokens();
-    if (isset($tokens[$name])) {
-      throw new IllegalArgumentException('Name "'.$name.'" already used');
-    }
-    $this->name= $name;
-  }
+  public function setName(private ?string $name= 'CAS') { }
  
   public function run(): int {
+    $tokens= $this->user->tokens();
+    if (isset($tokens[$this->name])) {
+      $this->err->writeLine('Name "'.$this->name.'" already used for ', $this->user);
+      return 1;
+    }
+
     $random= Secrets::random();
     $this->out->writeLinef(
       '* otpauth://totp/%s?secret=%s&label=%s',
@@ -34,7 +24,7 @@ class NewToken extends Administration {
       urlencode($this->name),
     );
 
-    $this->users->newToken($this->user, $this->name, $this->encryption->encrypt($random->bytes()));
+    $this->persistence->users()->newToken($this->user, $this->name, $this->encryption->encrypt($random->bytes()));
     return 0;
   }
 }

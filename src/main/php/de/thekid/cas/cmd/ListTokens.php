@@ -1,20 +1,9 @@
 <?php namespace de\thekid\cas\cmd;
 
 use com\google\authenticator\SecretBytes;
-use de\thekid\cas\Encryption;
-use de\thekid\cas\users\Users;
-use lang\IllegalArgumentException;
-use util\cmd\Arg;
 
 class ListTokens extends Administration {
-  private $user;
-
-  public function __construct(private Users $users, private Encryption $encryption) { }
-
-  #[Arg(position: 0)]
-  public function setUser(string $user) {
-    $this->user= $this->users->named($user) ?? throw new IllegalArgumentException('No such user '.$user);
-  }
+  use UserBased;
 
   public function run(): int {
     $count= 0;
