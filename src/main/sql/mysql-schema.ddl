@@ -16,6 +16,6 @@ create table token (
 
 create table ticket (
   ticket_id int(11) primary key auto_increment,
-  value tinytext,
+  value text,
   created datetime
 );
