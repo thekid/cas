@@ -1,28 +1,32 @@
 <?php namespace de\thekid\cas\unittest;
 
-use de\thekid\cas\Signed;
-use de\thekid\cas\flow\{DisplaySuccess, EnterCredentials, Flow, RedirectToService, UseService};
+use com\google\authenticator\{TimeBased, SecretBytes};
+use de\thekid\cas\flow\{DisplaySuccess, EnterCredentials, Flow, RedirectToService, UseService, QueryMFACode};
 use de\thekid\cas\impl\Login;
 use de\thekid\cas\services\Services;
 use de\thekid\cas\tickets\Tickets;
 use de\thekid\cas\users\{NoSuchUser, PasswordMismatch};
+use de\thekid\cas\{Signed, Encryption};
 use unittest\{Assert, Test};
 use util\Random;
 
 class LoginTest extends HandlerTest {
-  public const SERVICE = 'https://example.org/';
+  const SERVICE     = 'https://example.org/';
+  const TOTP_SECRET = 'U7YOJLCYMSOQDGI6';
 
-  private $persistence, $templates, $signed, $flow;
+  private $encryption, $persistence, $templates, $signed, $flow;
 
   #[Before]
   public function initialize() {
-    $this->persistence= new TestingPersistence(users: new TestingUsers(['root' => 'secret']));
+    $this->encryption= new Encryption(random_bytes(32));
+    $this->persistence= new TestingPersistence(users: new TestingUsers(['root' => ['password' => 'secret']]));
     $this->signed= new Signed('secret');
     $this->flow= new Flow([
       new UseService(new class() implements Services {
         public fn validate($url) => LoginTest::SERVICE === $url;
       }),
       new EnterCredentials($this->persistence),
+      new QueryMFACode($this->persistence, $this->encryption),
       new RedirectToService($this->persistence, $this->signed),
       new DisplaySuccess(),
     ]);
@@ -166,7 +170,7 @@ class LoginTest extends HandlerTest {
     Assert::equals(
       [
         'token'   => $token,
-        'flow'    => $this->signed->id(3),
+        'flow'    => $this->signed->id(4),
         'user'    => [
           'username'   => 'root',
           'mfa'        => false,
@@ -175,6 +179,71 @@ class LoginTest extends HandlerTest {
       ],
       $this->templates->rendered()['success']
     );
+  }
+
+  #[Test]
+  public function queries_mfa_code() {
+    $this->persistence->users()->newToken('root', 'CAS', $this->encryption->encrypt(self::TOTP_SECRET));
+    try {
+      $this->templates= new TestingTemplates();
+      $session= $this->session(['token' => $token= uniqid()]);
+
+      $this->handle($session, 'GET', '/login');
+      $this->handle($session, 'POST', '/login', [
+        'flow'     => $this->templates->rendered()['login']['flow'],
+        'token'    => $token,
+        'username' => 'root',
+        'password' => 'secret',
+      ]);
+
+      Assert::equals(
+        [
+          'token'   => $token,
+          'flow'    => $this->signed->id(2),
+          'service' => null
+        ],
+        $this->templates->rendered()['mfa']
+      );
+    } finally {
+      $this->persistence->users()->removeToken('root', 'CAS');
+    }
+  }
+
+  #[Test, Values(['current', 'previous', 'next'])]
+  public function continues_and_displays_success_after_querying_mfa_code($method) {
+    $this->persistence->users()->newToken('root', 'CAS', $this->encryption->encrypt(self::TOTP_SECRET));
+    try {
+      $this->templates= new TestingTemplates();
+      $session= $this->session(['token' => $token= uniqid()]);
+
+      $this->handle($session, 'GET', '/login');
+      $this->handle($session, 'POST', '/login', [
+        'flow'     => $this->templates->rendered()['login']['flow'],
+        'token'    => $token,
+        'username' => 'root',
+        'password' => 'secret',
+      ]);
+      $this->handle($session, 'POST', '/login', [
+        'flow'     => $this->templates->rendered()['mfa']['flow'],
+        'token'    => $token,
+        'code'     => new TimeBased(new SecretBytes(self::TOTP_SECRET))->{$method}(),
+      ]);
+
+      Assert::equals(
+        [
+          'token'   => $token,
+          'flow'    => $this->signed->id(4),
+          'user'    => [
+            'username'   => 'root',
+            'mfa'        => true,
+            'attributes' => null,
+          ],
+        ],
+        $this->templates->rendered()['success']
+      );
+    } finally {
+      $this->persistence->users()->removeToken('root', 'CAS');
+    }
   }
 
   #[Test]
