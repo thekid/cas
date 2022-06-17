@@ -71,6 +71,8 @@ $ xp serve -c src/main/etc/mongo
 
 *Now open http://localhost:8080/login in your browser.*
 
+To change the address and port the server runs on, add `-a 0.0.0.0:8443` to the above command line.
+
 User management
 ---------------
 All of the following use the *sql* configuration. For use with MongoDB, use `src/main/etc/mongo` instead!
