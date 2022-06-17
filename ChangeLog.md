@@ -3,6 +3,7 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* Removed user tokens from session - @thekid
 * Fixed `RemoveToken` admin command - @thekid
 
 ## 0.9.2 / 2022-06-17
