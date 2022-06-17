@@ -3,6 +3,10 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.9.2 / 2022-06-17
+
+* Simplified code in command line admin tooling - @thekid 
+
 ## 0.9.1 / 2022-06-17
 
 * Simplified injection by passing instances of `Persistence` - @thekid
