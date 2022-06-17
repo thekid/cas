@@ -33,7 +33,7 @@ class LoginTest extends HandlerTest {
   protected fn handler() => new Login($this->templates, $this->flow, $this->sessions, $this->signed);
 
   #[Test]
-  public function creates_session_if_ncessary() {
+  public function creates_session_if_necessary() {
     $this->templates= new TestingTemplates();
     $this->handle(null, 'GET', '/login');
     Assert::notEquals(null, current($this->sessions->all())->value('token'));
