@@ -16,6 +16,7 @@
     "xp-forge/hashing": "^2.0",
     "xp-forge/credentials": "^2.0",
     "xp-forge/google-authenticator": "^5.0",
+    "xp-forge/mongodb": "^1.3",
     "xp-lang/php-compact-methods": "^1.0",
     "xp-lang/xp-records": "^2.0",
     "xp-lang/xp-static": "^0.3",
