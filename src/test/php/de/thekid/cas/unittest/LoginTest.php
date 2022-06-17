@@ -143,7 +143,6 @@ class LoginTest extends HandlerTest {
     Assert::equals(
       [
         'username'   => 'root',
-        'tokens'     => [],
         'mfa'        => false,
         'attributes' => null,
       ],
@@ -170,7 +169,6 @@ class LoginTest extends HandlerTest {
         'flow'    => $this->signed->id(3),
         'user'    => [
           'username'   => 'root',
-          'tokens'     => [],
           'mfa'        => false,
           'attributes' => null,
         ],
@@ -196,7 +194,6 @@ class LoginTest extends HandlerTest {
         'service' => self::SERVICE,
         'user'    => [
           'username'   => 'root',
-          'tokens'     => [],
           'mfa'        => false,
           'attributes' => null,
         ],
@@ -213,7 +210,6 @@ class LoginTest extends HandlerTest {
   public function issues_ticket_and_redirect_to_service_directly_when_user_in_session() {
     $session= $this->session(['token' => $token= uniqid(), 'user' => [
       'username'   => 'root',
-      'tokens'     => [],
       'mfa'        => false,
       'attributes' => null,
     ]]);
@@ -224,7 +220,6 @@ class LoginTest extends HandlerTest {
         'service' => self::SERVICE,
         'user'    => [
           'username'   => 'root',
-          'tokens'     => [],
           'mfa'        => false,
           'attributes' => null,
         ],
@@ -242,7 +237,6 @@ class LoginTest extends HandlerTest {
     $this->templates= new TestingTemplates();
     $session= $this->session(['token' => $token= uniqid(), 'user' => [
       'username'   => 'root',
-      'tokens'     => [],
       'mfa'        => false,
       'attributes' => null,
     ]]);
@@ -265,7 +259,6 @@ class LoginTest extends HandlerTest {
     $this->templates= new TestingTemplates();
     $session= $this->session(['token' => $token= uniqid(), 'user' => [
       'username'   => 'admin',
-      'tokens'     => [],
       'mfa'        => false,
       'attributes' => null,
     ]]);

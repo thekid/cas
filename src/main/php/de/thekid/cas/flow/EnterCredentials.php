@@ -29,7 +29,6 @@ class EnterCredentials implements Step {
       if ($user= $result->authenticated()) {
         $session->register('user', [
           'username'   => $user->username(),
-          'tokens'     => $user->tokens(),
           'mfa'        => $user->mfa(),
           'attributes' => null, // TODO, see https://github.com/thekid/cas/issues/3
         ]);
