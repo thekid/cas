@@ -3,6 +3,12 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.10.0 / 2022-06-17
+
+* Merged PR #18: Use Redis for sessions in production - this way, the
+  server will also run clustered. Originally requested in #7
+  (@thekid)
+
 ## 0.9.3 / 2022-06-17
 
 * Removed user tokens from session - @thekid
