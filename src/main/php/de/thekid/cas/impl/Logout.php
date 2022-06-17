@@ -8,7 +8,7 @@ use web\session\Sessions;
  * Logout. If not accessed with a CSRF token, will display a logout
  * confirmation page.
  *
- * @test  xp://de.thekid.cas.unittest.LogoutTest
+ * @test  de.thekid.cas.unittest.LogoutTest
  */
 class Logout implements Handler {
 
