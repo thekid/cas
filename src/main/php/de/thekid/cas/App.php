@@ -3,8 +3,8 @@
 use de\thekid\cas\impl\{Login, Logout, Validate, AuthenticationFlow};
 use inject\{Injector, ConfiguredBindings};
 use security\credentials\{Credentials, FromEnvironment, FromFile};
+use web\Application;
 use web\handler\FilesFrom;
-use web\{Application, Filters};
 
 /**
  * CAS application implementing /login, /logout and /serviceValidate. The CAS 1.0
