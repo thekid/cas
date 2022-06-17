@@ -7,11 +7,11 @@ use web\io\{TestInput, TestOutput};
 use web\{Request, Response};
 
 class ValidateTest {
-  private $tickets, $signed;
+  private $persistence, $signed;
 
   #[Before]
   public function initialize() {
-    $this->tickets= new TestingTickets();
+    $this->persistence= new TestingPersistence();
     $this->signed= new Signed('testing-secret');
   }
 
@@ -33,7 +33,7 @@ class ValidateTest {
    * @return string
    */
   private function handle($uri) {
-    $fixture= new Validate($this->tickets, $this->signed);
+    $fixture= new Validate($this->persistence, $this->signed);
 
     $req= new Request(new TestInput('GET', $uri));
     $res= new Response(TestOutput::buffered());
@@ -44,14 +44,15 @@ class ValidateTest {
 
   #[Test]
   public function can_create() {
-    new Validate($this->tickets, $this->signed);
+    new Validate($this->persistence, $this->signed);
   }
 
   #[Test]
   public function validation_success() {
+    $tickets= $this->persistence->tickets();
     $ticket= $this->signed->id(
-      $this->tickets->create(['user' => ['username' => 'test'], 'service' => 'http://example.org']),
-      $this->tickets->prefix(),
+      $tickets->create(['user' => ['username' => 'test'], 'service' => 'http://example.org']),
+      $tickets->prefix(),
     );
     $this->assertResponse(
       '<cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
@@ -113,7 +114,7 @@ class ValidateTest {
 
   #[Test]
   public function missing_ticket() {
-    $ticket= $this->signed->id(1, $this->tickets->prefix());
+    $ticket= $this->signed->id(1, $this->persistence->tickets()->prefix());
     $response= sprintf('
       <cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
         <cas:authenticationFailure code="INVALID_TICKET">
@@ -127,9 +128,10 @@ class ValidateTest {
 
   #[Test]
   public function invalid_service() {
+    $tickets= $this->persistence->tickets();
     $ticket= $this->signed->id(
-      $this->tickets->create(['user' => ['username' => 'test'], 'service' => 'http://example.org']),
-      $this->tickets->prefix(),
+      $tickets->create(['user' => ['username' => 'test'], 'service' => 'http://example.org']),
+      $tickets->prefix(),
     );
     $this->assertResponse(
       '<cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
@@ -143,9 +145,10 @@ class ValidateTest {
 
   #[Test]
   public function success_using_explicit_xml_format() {
+    $tickets= $this->persistence->tickets();
     $ticket= $this->signed->id(
-      $this->tickets->create(['user' => ['username' => 'test'], 'service' => 'http://example.org']),
-      $this->tickets->prefix(),
+      $tickets->create(['user' => ['username' => 'test'], 'service' => 'http://example.org']),
+      $tickets->prefix(),
     );
     $this->assertResponse(
       '<cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
@@ -159,9 +162,10 @@ class ValidateTest {
 
   #[Test]
   public function success_using_json_format() {
+    $tickets= $this->persistence->tickets();
     $ticket= $this->signed->id(
-      $this->tickets->create(['user' => ['username' => 'test'], 'service' => 'http://example.org']),
-      $this->tickets->prefix(),
+      $tickets->create(['user' => ['username' => 'test'], 'service' => 'http://example.org']),
+      $tickets->prefix(),
     );
     $this->assertResponse(
       '{

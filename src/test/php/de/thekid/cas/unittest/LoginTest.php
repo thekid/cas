@@ -12,18 +12,18 @@ use util\Random;
 class LoginTest extends HandlerTest {
   public const SERVICE = 'https://example.org/';
 
-  private $templates, $signed, $flow;
+  private $persistence, $templates, $signed, $flow;
 
   #[Before]
   public function initialize() {
-    $this->tickets= new TestingTickets();
+    $this->persistence= new TestingPersistence(users: new TestingUsers(['root' => 'secret']));
     $this->signed= new Signed('secret');
     $this->flow= new Flow([
       new UseService(new class() implements Services {
         public fn validate($url) => LoginTest::SERVICE === $url;
       }),
-      new EnterCredentials(new TestingUsers(['root' => 'secret'])),
-      new RedirectToService($this->tickets, $this->signed),
+      new EnterCredentials($this->persistence),
+      new RedirectToService($this->persistence, $this->signed),
       new DisplaySuccess(),
     ]);
   }
@@ -201,10 +201,10 @@ class LoginTest extends HandlerTest {
           'attributes' => null,
         ],
       ],
-      $this->tickets->validate(0),
+      $this->persistence->tickets()->validate(0),
     );
     Assert::equals(
-      self::SERVICE.'?ticket='.$this->signed->id(0, $this->tickets->prefix()),
+      self::SERVICE.'?ticket='.$this->signed->id(0, $this->persistence->tickets()->prefix()),
       $res->headers()['Location']
     );
   }
@@ -229,10 +229,10 @@ class LoginTest extends HandlerTest {
           'attributes' => null,
         ],
       ],
-      $this->tickets->validate(1),
+      $this->persistence->tickets()->validate(1),
     );
     Assert::equals(
-      self::SERVICE.'?ticket='.$this->signed->id(1, $this->tickets->prefix()),
+      self::SERVICE.'?ticket='.$this->signed->id(1, $this->persistence->tickets()->prefix()),
       $res->headers()['Location']
     );
   }
