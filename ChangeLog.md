@@ -3,6 +3,12 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.9.1 / 2022-06-17
+
+* Simplified injection by passing instances of `Persistence` - @thekid
+* Change signing to use `hash_equals()` instead of equality - @thekid
+* Fixed *Data too long for column `value` at row 1"* problem - @thekid
+
 ## 0.9.0 / 2022-06-17
 
 * Merged PR #15: Add MongoDB persistence. The CAS server can now be run
