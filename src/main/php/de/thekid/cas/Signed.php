@@ -5,7 +5,7 @@ use util\Secret;
 /**
  * Signed ID values using `MD5` hash with a secret value
  *
- * @test  xp://de.thekid.cas.unittest.SignedTest
+ * @test  de.thekid.cas.unittest.SignedTest
  */
 class Signed {
   private $secret;
@@ -23,7 +23,7 @@ class Signed {
   /** Verifies a signed string, returning the underlying ID */
   public function verify(?string $signed, string $prefix= ''): ?string {
     if (null !== $signed && 2 === sscanf($signed, $prefix.'%[0-9a-f]-%s', $hash, $id)) {
-      if ($hash === md5($id.$this->secret->reveal())) return $id;
+      if (hash_equals($hash, md5($id.$this->secret->reveal()))) return $id;
     }
     return null;
   } 
