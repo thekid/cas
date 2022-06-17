@@ -3,6 +3,11 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.9.0 / 2022-06-17
+
+* Merged PR #15: Add MongoDB persistence. The CAS server can now be run
+  with either MySQL / MariaDB or MongoDB.
+  (@thekid)
 * Merged PR #14: Refactor persistence. This opens up possibilities to
   easily create own implementations, e.g. one based on MongoDB.
   (@thekid)
