@@ -1,7 +1,6 @@
 <?php namespace de\thekid\cas\impl;
 
-use de\thekid\cas\Signed;
-use de\thekid\cas\tickets\Tickets;
+use de\thekid\cas\{Signed, Persistence};
 use web\Handler;
 
 /**
@@ -12,7 +11,7 @@ use web\Handler;
  */
 class Validate implements Handler {
 
-  public function __construct(private Tickets $tickets, private Signed $signed) { }
+  public function __construct(private Persistence $persistence, private Signed $signed) { }
 
   /**
    * Handle request and response
@@ -34,7 +33,7 @@ class Validate implements Handler {
       ));
     }
 
-    if (null === ($id= $this->signed->verify($ticket, $this->tickets->prefix()))) {
+    if (null === ($id= $this->signed->verify($ticket, $this->persistence->tickets()->prefix()))) {
       return $response->transmit($res, $response->failure(
         'INVALID_TICKET_SPEC',
         'Ticket %s',
@@ -42,7 +41,7 @@ class Validate implements Handler {
       ));
     }
 
-    if (null === ($issued= $this->tickets->validate($id))) {
+    if (null === ($issued= $this->persistence->tickets()->validate($id))) {
       return $response->transmit($res, $response->failure(
         'INVALID_TICKET',
         'Ticket %s not recognized',

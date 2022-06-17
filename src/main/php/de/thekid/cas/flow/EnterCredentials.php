@@ -1,12 +1,12 @@
 <?php namespace de\thekid\cas\flow;
 
-use de\thekid\cas\users\Users;
+use de\thekid\cas\Persistence;
 use lang\Throwable;
 use util\Secret;
 
 class EnterCredentials implements Step {
 
-  public function __construct(private Users $users) { }
+  public function __construct(private Persistence $persistence) { }
 
   public function setup($req, $res, $session) {
 
@@ -16,7 +16,7 @@ class EnterCredentials implements Step {
 
       // Verify user still exists in database. TODO: If tokens or password
       // have changed, also force reauthentication!
-      if ($this->users->named($authenticated['username'])) return;
+      if ($this->persistence->users()->named($authenticated['username'])) return;
     }
 
     // Show login view
@@ -25,7 +25,7 @@ class EnterCredentials implements Step {
 
   public function complete($req, $res, $session) {
     try {
-      $result= $this->users->authenticate($req->param('username'), new Secret($req->param('password')));
+      $result= $this->persistence->users()->authenticate($req->param('username'), new Secret($req->param('password')));
       if ($user= $result->authenticated()) {
         $session->register('user', [
           'username'   => $user->username(),
