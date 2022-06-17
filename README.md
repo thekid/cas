@@ -71,10 +71,9 @@ $ xp serve -c src/main/etc/mongo
 
 *Now open http://localhost:8080/login in your browser.*
 
-All of the following use the *sql* configuration. For use with MongoDB, use `src/main/etc/mongo` instead!
-
 User management
 ---------------
+All of the following use the *sql* configuration. For use with MongoDB, use `src/main/etc/mongo` instead!
 
 ```sh
 # Create a new user; generating a random password if necessary
