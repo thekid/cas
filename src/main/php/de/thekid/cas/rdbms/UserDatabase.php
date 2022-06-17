@@ -25,15 +25,6 @@ class UserDatabase extends Users {
   /** Creates a new database-driven datasource */
   public function __construct(private DBConnection $conn) { }
 
-  /** Fetches tokens */
-  private function tokens($id): array<string, string> {
-    $tokens= [];
-    foreach ($this->conn->query('select * from token where user_id = %d', $id) as $token) {
-      $tokens[$token['name']]= $token['secret'];
-    }
-    return $tokens;    
-  }
-
   /** Returns all users */
   public function all(?string $filter= null): iterable {
     if (null === $filter) {
@@ -59,10 +50,18 @@ class UserDatabase extends Users {
 
   /** Returns a user by a given username */
   public function named(string $username): ?User {
-    $user= $this->conn->query('select * from user where username = %s', $username)->next();
-    if (null === $user) return null;
+    $results= $this->conn->select(
+      '* from user left join token on user.user_id = token.user_id where username = %s',
+      $username
+    );
+    if (empty($results)) return null;
 
-    return new User($user['username'], $user['hash'], $this->tokens($user['user_id']));
+    // Map outer-join list of tokens
+    $tokens= [];
+    foreach ($results as $record) {
+      $record['token_id'] && $tokens[$record['name']]= $record['secret'];
+    }
+    return new User($results[0]['username'], $results[0]['hash'], $tokens);
   }
 
   /** Creates a new user with a given username and password. */
