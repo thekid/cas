@@ -16,30 +16,12 @@ Setup
 -----
 For use with MySQL / MariaDB, create a database with the following tables (*the following uses MySQL syntax, adopt if necessary!*):
 
-```sql
-create database IDENTITIES
-use IDENTITIES
+```bash
+# Create database and tables
+$ cat src/main/sql/mysql-schema.ddl | mysql -u root
 
-create table user (
-  user_id int(11) primary key auto_increment,
-  username varchar(100) unique,
-  hash varchar(255)
-)
-
-create table token (
-  token_id int(11) primary key auto_increment,
-  user_id int(11),
-  name varchar(255),
-  secret varchar(255)
-)
-
-create table ticket (
-  ticket_id int(11) primary key auto_increment,
-  value tinytext,
-  created datetime
-)
-
-grant all on IDENTITIES.* to 'cas'@'%' identified by '...'
+# Create user
+$ mysql -u root -e "grant all on IDENTITIES.* to 'cas'@'%' identified by '...'"
 ```
 
 MongoDB collections are created automatically when the first document is inserted - so the only thing necessary is to create the user for the respective database, as shown in the following Mongo CLI commands:
