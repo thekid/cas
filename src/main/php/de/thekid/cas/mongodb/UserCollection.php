@@ -62,7 +62,7 @@ class UserCollection extends Users {
   public function password(string|User $user, string|Secret $password): void {
     $this->collection->update(
       ['username' => $user instanceof User ? $user->username() : $user],
-      ['hash' => $this->hash($password)]
+      [['$set' => ['hash' => $this->hash($password)]]]
     );
   }
 

@@ -3,6 +3,10 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+## 0.10.1 / 2022-06-18
+
+* Fixed changing passwords with MongoDB persistence - @thekid
+
 ## 0.10.0 / 2022-06-17
 
 * Merged PR #18: Use Redis for sessions in production - this way, the
