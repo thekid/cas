@@ -24,7 +24,7 @@ class Encryption {
         } catch ($e) {
           throw new FormatException('Errors: ['.$e->getMessage().']', $e);
         }
-        if (false === ($r= sodium_crypto_secretbox_open($cipher, $nonce, $key->reveal()))) {
+        if (false === $r) {
           $e= new FormatException('Decryption failed');
           \xp::gc(__FILE__);
           throw $e;
