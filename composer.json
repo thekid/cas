@@ -11,7 +11,7 @@
     "xp-framework/xml": "^11.0",
     "xp-forge/web": "^3.0",
     "xp-forge/sessions": "^3.0",
-    "xp-forge/inject": "^5.0",
+    "xp-forge/inject": "^5.4",
     "xp-forge/handlebars": "^7.0",
     "xp-forge/hashing": "^2.0",
     "xp-forge/credentials": "^2.0",

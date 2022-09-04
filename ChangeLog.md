@@ -3,6 +3,8 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* Simplified configuration files - @thekid
+
 ## 0.10.1 / 2022-06-18
 
 * Fixed changing passwords with MongoDB persistence - @thekid
