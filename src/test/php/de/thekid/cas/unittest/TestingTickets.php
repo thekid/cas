@@ -1,7 +1,7 @@
 <?php namespace de\thekid\cas\unittest;
 
 use de\thekid\cas\tickets\Tickets;
-use unittest\Assert;
+use test\Assert;
 
 class TestingTickets extends Tickets {
   private $backing= [];

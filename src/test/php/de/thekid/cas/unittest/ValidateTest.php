@@ -2,7 +2,7 @@
 
 use de\thekid\cas\Signed;
 use de\thekid\cas\impl\Validate;
-use unittest\{Assert, Test};
+use test\{Assert, Before, Test};
 use web\io\{TestInput, TestOutput};
 use web\{Request, Response};
 

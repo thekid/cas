@@ -1,13 +1,13 @@
 <?php namespace de\thekid\cas\unittest;
 
-use com\google\authenticator\{TimeBased, SecretBytes};
-use de\thekid\cas\flow\{DisplaySuccess, EnterCredentials, Flow, RedirectToService, UseService, QueryMFACode};
+use com\google\authenticator\{SecretBytes, TimeBased};
+use de\thekid\cas\flow\{DisplaySuccess, EnterCredentials, Flow, QueryMFACode, RedirectToService, UseService};
 use de\thekid\cas\impl\Login;
 use de\thekid\cas\services\Services;
 use de\thekid\cas\tickets\Tickets;
 use de\thekid\cas\users\{NoSuchUser, PasswordMismatch};
-use de\thekid\cas\{Signed, Encryption};
-use unittest\{Assert, Test};
+use de\thekid\cas\{Encryption, Signed};
+use test\{Assert, Before, Test, Values};
 use util\Random;
 
 class LoginTest extends HandlerTest {

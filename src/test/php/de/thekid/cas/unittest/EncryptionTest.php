@@ -2,7 +2,7 @@
 
 use de\thekid\cas\Encryption;
 use lang\FormatException;
-use unittest\{Assert, Test, Expect, Values};
+use test\{Assert, Before, Expect, Test, Values};
 use util\{Random, Secret};
 
 class EncryptionTest {

@@ -3,7 +3,7 @@
 use com\github\mustache\{InMemory, TemplateNotFoundException};
 use de\thekid\cas\TemplateEngine;
 use io\Path;
-use unittest\{Assert, Test};
+use test\{Assert, Expect, Test};
 use web\Response;
 use web\io\{Buffered, TestOutput};
 
