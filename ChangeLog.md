@@ -3,6 +3,7 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #19: Migrate to new testing library - @thekid
 * Simplified configuration files - @thekid
 
 ## 0.10.1 / 2022-06-18
