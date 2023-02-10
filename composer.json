@@ -24,7 +24,7 @@
     "php" : ">=7.0.0"
   },
   "require-dev": {
-    "xp-framework/test": "dev-main"
+    "xp-framework/test": "^1.0"
   },
   "scripts": {
     "serve": "xp -supervise web -s de.thekid.cas.App"
