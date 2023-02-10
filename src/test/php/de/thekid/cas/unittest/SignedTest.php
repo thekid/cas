@@ -1,7 +1,7 @@
 <?php namespace de\thekid\cas\unittest;
 
 use de\thekid\cas\Signed;
-use unittest\{Assert, Test, Values};
+use test\{Assert, Test, Values};
 use util\Secret;
 
 class SignedTest {

@@ -1,7 +1,7 @@
 <?php namespace de\thekid\cas\unittest;
 
 use de\thekid\cas\Templating;
-use unittest\Assert;
+use test\Assert;
 
 class TestingTemplates implements Templating {
   private $rendered= [];

@@ -1,6 +1,6 @@
 <?php namespace de\thekid\cas\unittest;
 
-use unittest\Assert;
+use test\{Assert, Before};
 use web\io\{TestInput, TestOutput};
 use web\session\ForTesting;
 use web\{Request, Response};
