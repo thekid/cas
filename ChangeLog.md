@@ -3,6 +3,8 @@ CAS Server change log
 
 ## ?.?.? / ????-??-??
 
+* **Heads up:** Dropped support for PHP < 7.4 - @thekid
+* Upgraded dependencies to newest releases - @thekid
 * Merged PR #19: Migrate to new testing library - @thekid
 * Simplified configuration files - @thekid
 
