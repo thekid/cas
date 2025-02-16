@@ -4,27 +4,26 @@
   "license": "BSD",
 
   "require": {
-    "xp-framework/core": "^11.0",
-    "xp-framework/compiler": "^8.0",
-    "xp-framework/command": "^11.0",
-    "xp-framework/rdbms": "^13.0",
-    "xp-framework/xml": "^11.0",
-    "xp-forge/web": "^3.0",
-    "xp-forge/sessions": "^3.0",
-    "xp-forge/inject": "^5.4",
-    "xp-forge/handlebars": "^7.0",
-    "xp-forge/hashing": "^2.0",
-    "xp-forge/credentials": "^2.0",
-    "xp-forge/google-authenticator": "^5.0",
-    "xp-forge/mongodb": "^1.3",
-    "xp-forge/redis-sessions": "^1.1",
-    "xp-lang/php-compact-methods": "^1.0",
-    "xp-lang/xp-records": "^2.0",
-    "xp-lang/xp-static": "^0.3",
+    "xp-framework/compiler": "^9.3",
+    "xp-framework/command": "^12.0",
+    "xp-framework/rdbms": "^13.3",
+    "xp-framework/xml": "^12.0",
+    "xp-forge/web": "^4.5",
+    "xp-forge/sessions": "^3.2",
+    "xp-forge/inject": "^6.0",
+    "xp-forge/handlebars": "^9.4",
+    "xp-forge/hashing": "^2.3",
+    "xp-forge/credentials": "^3.1",
+    "xp-forge/google-authenticator": "^5.2",
+    "xp-forge/mongodb": "3.1",
+    "xp-forge/redis-sessions": "^2.2",
+    "xp-lang/php-compact-methods": "^2.0",
+    "xp-lang/xp-records": "^3.1",
+    "xp-lang/xp-static": "^2.0",
     "php" : ">=7.0.0"
   },
   "require-dev": {
-    "xp-framework/test": "^1.0"
+    "xp-framework/test": "^2.1"
   },
   "scripts": {
     "serve": "xp -supervise web -s de.thekid.cas.App"
