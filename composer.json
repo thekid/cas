@@ -14,7 +14,7 @@
     "xp-forge/handlebars": "^9.4",
     "xp-forge/hashing": "^2.3",
     "xp-forge/credentials": "^3.1",
-    "xp-forge/google-authenticator": "^5.2",
+    "xp-forge/google-authenticator": "^6.0",
     "xp-forge/mongodb": "3.1",
     "xp-forge/redis-sessions": "^2.2",
     "xp-lang/php-compact-methods": "^2.0",
